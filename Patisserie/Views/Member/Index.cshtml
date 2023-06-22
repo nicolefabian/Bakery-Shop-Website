@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Patisserie.Models.DB.Member>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+ @if (User.IsInRole("Administrator") || User.IsInRole("Staff"))
+ {
+<p>
+        <a class="btn btn-success btn-primary mb-2" asp-action="Create"><i class="fa-sharp fa-solid fa-circle-plus"></i> Create New Member</a>
+</p>
+ }
+
+
+<table class="table table-responsive">
+    <thead>
+        <tr class="table-active">
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Membership)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MembershipExpiry)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MembershipDuration)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Membership)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MembershipExpiry)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MembershipDuration)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.MemberId" class="btn btn-info btn-sm"><i class="fa-regular fa-pen-to-square"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.MemberId" class="btn btn-secondary btn-sm"> <i class="fa-solid fa-file-lines"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.MemberId" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

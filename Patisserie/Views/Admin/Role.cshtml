@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<p>
+<a class="btn btn-success btn-primary mb-2" asp-action="CreateRole"><i class="fa-sharp fa-solid fa-circle-plus"></i> Create Role</a>
+</p>
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table col-3">
+            <thead>
+                <tr>
+                <td><h5><b>Role</b></h5></td>
+                  <td></td>
+                </tr>
+            </thead>
+            @foreach (var role in Model)
+            {
+            <tbody>
+                    <tr>
+                        <td>@role.Name</td>
+                        <td>
+                        <a asp-action="EditRole" asp-route-id="@role.Id" class="btn btn-info btn-sm button_actions"><i class="fa-regular fa-pen-to-square"></i></a>
+                            <a asp-action="DeleteRole" asp-route-id="@role.Id" class="btn btn-danger btn-sm button_actions"><i class="fa-solid fa-delete-left"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    }
+    else
+    {
+        <h5>No roles found.</h5>
+    }

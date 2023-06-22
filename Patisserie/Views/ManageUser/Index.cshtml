@@ -1,0 +1,96 @@
+﻿@model IEnumerable<Patisserie.Models.DB.AspNetUser>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<style>
+    /*to make it the column fit*/
+    th, td {
+        white-space: nowrap;
+    }
+</style>
+<h3>Manage users</h3>
+<br />
+
+@*<div>
+    <a asp-action="FilterByRole" asp-route-role="StaffAdmin" class="btn btn-primary button_submit">Staff and Admin</a>
+    <a asp-action="FilterByRole" asp-route-role="Member" class="btn btn-primary button_submit">Members</a>
+</div>*@
+
+<br />
+
+<!--have horizontal scrolling-->
+<div style="width: 100%; overflow-x: auto;">
+    <table class="table table-responsive">
+        <thead>
+            <tr class="table-active">
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Membership)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.MembershipDuration)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MembershipExpiry)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @if (string.IsNullOrEmpty(item.PhoneNumber))
+                        {
+                            <span class="text-muted">Unavailable</span>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.PhoneNumber)
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Membership)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MembershipDuration) months
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MembershipExpiry)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info btn-sm button_actions"><i class="fa-regular fa-pen-to-square"></i></a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary btn-sm button_actions"><i class="fa-solid fa-circle-info"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm button_actions"><i class="fa-solid fa-delete-left"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,69 @@
+﻿@page
+@model ExternalLoginModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h3>@ViewData["Title"]</h3>
+<h5 id="external-login-title">Associate your @Model.ProviderDisplayName account.</h5>
+<hr />
+
+<p id="external-login-description" class="text-info">
+    You've successfully authenticated with <strong>@Model.ProviderDisplayName</strong>.
+    Please enter an email address for this site below and click the Register button to finish
+    logging in.
+</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating">
+                <input asp-for="Input.Email" class="form-control" autocomplete="email" required/>
+                <label asp-for="Input.Email" class="form-label"></label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <!--Adding the custom fields-->
+            <div class="form-floating">
+                <input asp-for="Input.FirstName" class="form-control" autocomplete="FirstName" aria-required="true" required />
+                <label asp-for="Input.FirstName">First Name</label>
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating">
+                <input asp-for="Input.LastName" class="form-control" autocomplete="LastName" aria-required="true" required>
+                <label asp-for="Input.LastName">Last Name</label>
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+
+           
+            <div class="form-floating">
+                <select asp-for="Input.Membership" class="form-control" autocomplete="Membership" aria-required="true" required>
+                    <option disabled selected value="">Select membership type</option>
+                    <option value="Gold">Gold</option>
+                    <option value="Silver">Silver</option>
+                    <option value="bronze">Bronze</option>
+                </select>
+                <span asp-validation-for="Input.Membership" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating">
+                <select asp-for="Input.MembershipDuration" class="form-control" autocomplete="MembershipDuration" aria-required="true" required>
+                    <option disabled selected value="">Select membership duration</option>
+                    <option value="2">2 Months</option>
+                    <option value="4">4 Months</option>
+                    <option value="6">6 Months</option>
+                </select>
+                <span asp-validation-for="Input.MembershipDuration" class="text-danger"></span>
+            </div>
+
+            <br />
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
