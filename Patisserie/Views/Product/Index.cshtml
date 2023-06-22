@@ -12,11 +12,12 @@
 <h3>Products</h3>
 
 <br />
-<!--ADD AUTHENTICATION NEXT TIME-->
-<p class="align-items-center">
-    <a asp-action="Create" class="btn btn-success btn-sm"> <i class="fa-sharp fa-solid fa-circle-plus"></i> Add product</a>
-</p>
-
+@if(User.IsInRole("Administratot") || (User.IsInRole("Staff")))
+{
+    <p class="align-items-center">
+        <a asp-action="Create" class="btn btn-success btn-sm"> <i class="fa-sharp fa-solid fa-circle-plus"></i> Add product</a>
+    </p>
+}
 
 <div class="row justify-content-center">
     <div class="col-12 col-md-10 col-lg-5">
@@ -41,33 +42,38 @@
     </div>
 </div>
 
+<br />
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var item in Model)
     {
         <div class="col">
             <div class="card h-100">
-                 @*<a asp-action="Details" asp-route-id="@item.ProductId">
-            <img src="~/images/@item.Image" class="card-img-top">
-            </a> *@
-                <div class="card-body text-center card-body-header">
+                <a asp-action="Details" asp-route-id="@item.ProductId">
+                    <img src="~/images/@item.Image" class="card-img-top" alt="@item.Name">
+                </a>
+                <div class="card-body">
                     <a asp-action="Details" asp-route-id="@item.ProductId">
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
-                        <h6 class="card-title">@Html.DisplayFor(modelItem => item.Category.Name)</h6>
+                        <h6 class="card-subtitle">@Html.DisplayFor(modelItem => item.Category.Name)</h6>
                     </a>
                     <p class="card-text">@Html.Raw(item.Description)</p>
                 </div>
-                <div class="card-body d-flex flex-column card-body-footer">
-                    <h6 class="card-title">$@Html.DisplayFor(modelItem => item.Price) <span class="currency">nzd</span></h6>
-                    <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.ProductId" class="btn btn-md btn-primary mt-auto">Add To Cart</a>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <h6 class="card-title">$@Html.DisplayFor(modelItem => item.Price) <span class="currency">NZD</span></h6>
+                    <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.ProductId" class="btn btn-md btn-primary">Add To Cart</a>
                 </div>
             </div>
         </div>
-
-
     }
 </div>
-@*<table class="table">
+
+
+
+
+
+@*
+<table class="table">
     <thead>
         <tr>
             <th>
@@ -98,7 +104,7 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
+                @Html.DisplayFor(modelItem => item.Category.CategoryId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |

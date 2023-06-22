@@ -33,10 +33,10 @@ namespace Patisserie.Controllers
         {
             var pageNumber = page ?? 1;
 
-            var product = from e in _context.Products select e;
+            var product = _context.Products.Include(p => p.Category);
             if (!String.IsNullOrEmpty(searchString))
             {
-                product = product.Where(p => p.Name.Contains(searchString));
+                product = product.Where(p => p.Name.Contains(searchString)).Include(c => c.Category);
             }
             return View(product.ToPagedList(pageNumber, 5));
         }
