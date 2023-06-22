@@ -17,6 +17,7 @@ namespace Patisserie.Models.DB
         public string Description { get; set; } = null!;
         public decimal Price { get; set; }
         public int CategoryId { get; set; }
+        public string? Image { get; set; }
 
         public virtual Category Category { get; set; } = null!;
         public virtual ICollection<CartItem> CartItems { get; set; }

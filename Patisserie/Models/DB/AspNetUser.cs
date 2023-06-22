@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
 
 namespace Patisserie.Models.DB
 {
@@ -32,7 +30,7 @@ namespace Patisserie.Models.DB
         public DateTimeOffset? LockoutEnd { get; set; }
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
-        
+
         [DisplayName("First name")]
 
         public string? FirstName { get; set; }
@@ -40,7 +38,7 @@ namespace Patisserie.Models.DB
         [DisplayName("Last name")]
         public string? LastName { get; set; }
         public string? Membership { get; set; }
-        
+
         [DisplayName("Membership duration")]
 
         public int MembershipDuration { get; set; }

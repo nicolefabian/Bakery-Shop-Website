@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace Patisserie.Models.DB
 {
@@ -21,7 +21,7 @@ namespace Patisserie.Models.DB
         [DataType(DataType.Date)]
         public DateTime MembershipExpiry { get; set; }
         [DisplayName("Membership duration")]
-     
+
         public int MembershipDuration { get; set; }
     }
 }
