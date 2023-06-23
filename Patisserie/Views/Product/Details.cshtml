@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h3>Details</h3>
 
 <div>
     <h4>Product</h4>
@@ -29,15 +29,25 @@
             @Html.DisplayFor(model => model.Price)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
+            @Html.DisplayNameFor(model => model.Image)
         </dt>
-        <!--display full category name-->
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.Name)
+        <dd class="col-sm-2">
+            <img src="@Url.Content("~/uploads/" + Model.Image)" alt="Product Image" class="image-display" width="350" height="200" />
         </dd>
     </dl>
+    <dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Category)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Category.Name)
+    </dd>
+    </dl>
+
+ 
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ProductId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.ProductId" class="btn btn-info btn-sm button_actions">Edit</a>
+    <a asp-action="Delete" asp-route-id="@Model?.ProductId" class="btn btn-danger btn-sm button_actions">Delete</a>
+    <a asp-action="Index" class="btn btn-warning">Back to list</a>
 </div>

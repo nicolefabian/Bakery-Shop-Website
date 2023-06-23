@@ -14,10 +14,13 @@ namespace Patisserie.Controllers
     public class ProductController : Controller
     {
         private readonly FSWD2023fabi18Context _context;
+        //for image
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(FSWD2023fabi18Context context)
+        public ProductController(FSWD2023fabi18Context context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         /*// GET: Product
@@ -26,7 +29,6 @@ namespace Patisserie.Controllers
             var fSWD2023fabi18Context = _context.Products.Include(p => p.Category);
             return View(await fSWD2023fabi18Context.ToListAsync());
         }*/
-
 
         //modified to take parameters
         public async Task<IActionResult> Index(string searchString, int? page)
@@ -38,7 +40,7 @@ namespace Patisserie.Controllers
             {
                 product = product.Where(p => p.Name.Contains(searchString)).Include(c => c.Category);
             }
-            return View(product.ToPagedList(pageNumber, 5));
+            return View(product.ToPagedList(pageNumber, 9));
         }
 
         //search for a product
@@ -73,7 +75,7 @@ namespace Patisserie.Controllers
         // GET: Product/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name");
             return View();
         }
 
@@ -82,10 +84,22 @@ namespace Patisserie.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,Name,Description,Price,CategoryId")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductId,Name,Description,Price,CategoryId,Image")] Product product, IFormFile image)
         {
             if (ModelState.IsValid)
             {
+                if (image != null)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                    //string uniqueFileName = image.FileName;
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await image.CopyToAsync(fileStream);
+                    }
+                    product.Image = uniqueFileName;
+                }
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -107,7 +121,7 @@ namespace Patisserie.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", product.CategoryId);
             return View(product);
         }
 
@@ -116,7 +130,7 @@ namespace Patisserie.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,Name,Description,Price,CategoryId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductId,Name,Description,Price,CategoryId,Image")] Product product, IFormFile image)
         {
             if (id != product.ProductId)
             {
@@ -125,6 +139,18 @@ namespace Patisserie.Controllers
 
             if (ModelState.IsValid)
             {
+                if (image != null)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                    //string uniqueFileName = image.FileName;
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await image.CopyToAsync(fileStream);
+                    }
+                    product.Image = uniqueFileName;
+                }
                 try
                 {
                     _context.Update(product);

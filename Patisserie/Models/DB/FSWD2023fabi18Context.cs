@@ -268,7 +268,7 @@ namespace Patisserie.Models.DB
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Product_Category");
+                    .HasConstraintName("FK_Product_Category1");
             });
 
             OnModelCreatingPartial(modelBuilder);

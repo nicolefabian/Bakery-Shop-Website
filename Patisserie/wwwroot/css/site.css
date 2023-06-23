@@ -63,9 +63,35 @@ body {
 
 
 .button_actions {
-    margin-right: 5px;
+    margin-right: 8px;
 }
 
 .form-group {
     margin-top: 20px;
+}
+
+.card-img-top {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.no-link-style {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-actions {
+    margin-top: 10px;
+}
+
+.action-link {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #000;
+    /* Add any other desired styles */
+}
+
+.actionbutton {
+    margin-right: 10px;
 }

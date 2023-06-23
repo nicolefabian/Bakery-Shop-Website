@@ -9,24 +9,25 @@
     @*using fontawesome kit for icons styling*@
     <script src="https://kit.fontawesome.com/1269185472.js" crossorigin="anonymous"></script>
 </head>
-<h3>Products</h3>
-
-<br />
-@if(User.IsInRole("Administratot") || (User.IsInRole("Staff")))
+<h3>Home</h3>
+@if(User.IsInRole("Administrator")  || User.IsInRole("Staff"))
 {
+    <br />
     <p class="align-items-center">
         <a asp-action="Create" class="btn btn-success btn-sm"> <i class="fa-sharp fa-solid fa-circle-plus"></i> Add product</a>
     </p>
+
 }
+
 
 <div class="row justify-content-center">
     <div class="col-12 col-md-10 col-lg-5">
         <form class="card card-sm border-0" id="searchForm" action="/Product/Index" method="get" autocomplete="off">
-            <div class="card-body row align-items-center">
+            <div class="card-body row">
                 <div class="col">
                     <div class="input-group">
                         <input type="text" id="searchString" name="searchString" class="form-control form-control-lg rounded"
-                               autocomplete="off" onkeyup="XAjaxRequest(this.value);" placeholder="Search products">
+                               autocomplete="off" onkeyup="XAjaxRequest(this.value);" placeholder="Search products" required>
                     </div>
                 </div>
 
@@ -42,7 +43,6 @@
     </div>
 </div>
 
-<br />
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var item in Model)
@@ -50,18 +50,18 @@
         <div class="col">
             <div class="card h-100">
                 <a asp-action="Details" asp-route-id="@item.ProductId">
-                    <img src="~/images/@item.Image" class="card-img-top" alt="@item.Name">
+                    <img src="@Url.Content("~/uploads/" + item.Image)" alt="Product Image" class="card-img-top">
                 </a>
                 <div class="card-body">
                     <a asp-action="Details" asp-route-id="@item.ProductId">
-                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
-                        <h6 class="card-subtitle">@Html.DisplayFor(modelItem => item.Category.Name)</h6>
+                        <h5 class="card-title no-link-style">@Html.DisplayFor(modelItem => item.Name)</h5>
+                        <h6 class="card-subtitle no-link-style">@Html.DisplayFor(modelItem => item.Category.Name)</h6>
                     </a>
                     <p class="card-text">@Html.Raw(item.Description)</p>
                 </div>
                 <div class="card-footer d-flex justify-content-between align-items-center">
                     <h6 class="card-title">$@Html.DisplayFor(modelItem => item.Price) <span class="currency">NZD</span></h6>
-                    <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.ProductId" class="btn btn-md btn-primary">Add To Cart</a>
+                    <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.ProductId" class="btn btn-md btn-primary">Add to Cart</a>
                 </div>
             </div>
         </div>
@@ -70,10 +70,7 @@
 
 
 
-
-
-@*
-<table class="table">
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -104,7 +101,7 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryId)
+                @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |

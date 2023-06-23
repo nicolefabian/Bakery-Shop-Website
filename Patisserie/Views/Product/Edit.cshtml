@@ -4,35 +4,71 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h3>Edit product</h3>
 
-<h4>Product</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ProductId" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control" required/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <input asp-for="Description" class="form-control" required/>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" class="form-control" required/>
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
+
+            <!--display category name-->
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <select asp-for="CategoryId" class="form-control" required>
+
+                    @foreach (var productCat in (SelectList)ViewData["CategoryId"])
+                    {
+                        <option value="@productCat.Value">@productCat.Text</option>
+                    }
+                </select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Image" class="control-label">Change Image</label>
+                <input asp-for="Image" type="file" accept="image/jpeg, image/png" class="form-control">
+                <span asp-validation-for="Image" class="text-danger"></span>
+
+                <!-- if no existing image in database-->
+                <br />
+                @if (string.IsNullOrEmpty(Model.Image))
+                {
+                    <!--hide existing image label-->
+                    <style>
+                        .hidden-label {
+                            display: none;
+                        }
+                    </style>
+                }
+        
+                else
+                {
+                    <label asp-for="Image" class="control-label hidden-label">Existing image</label>
+                    <!--display the matching image-->
+                    <div>
+                        <img src="@Url.Content("~/uploads/" + Model.Image)" alt="Product Image" class="existing-image" width="350" height="250" />
+                    </div>
+                }       
+            </div>
+
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
