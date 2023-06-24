@@ -28,6 +28,16 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 
 builder.Services.AddControllersWithViews();
 
+
+//------------------------------------
+builder.Services.AddDistributedMemoryCache(); // Required for session storage
+
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -46,6 +56,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+//enable session for cart
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
