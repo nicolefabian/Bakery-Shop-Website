@@ -1,4 +1,7 @@
-﻿@model IEnumerable<Patisserie.Models.DB.AspNetUser>
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@using X.PagedList;
+@model IPagedList<Patisserie.Models.DB.AspNetUser>
 
 @{
     ViewData["Title"] = "Index";
@@ -22,32 +25,55 @@
 
 <br />
 
+<div class="row">
+    <div class="col-12 col-md-10 col-lg-5">
+        <form class="card card-sm border-0" id="searchForm" action="/ManageUser/Index" method="get" autocomplete="off">
+            <div class="card-body row">
+                <div class="col">
+                    <div class="input-group">
+                        <input type="text" id="searchString" name="searchString" class="form-control rounded"
+                               autocomplete="off" onkeyup="XAjaxRequest(this.value);" placeholder="Search users" required>
+                    </div>
+                </div>
+
+                <div class="col-auto">
+                    <button class="btn btn-lg btn-success" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div id="autoSuggestContainer" class="autoSuggest" style="border: none;"></div>
+    </div>
+</div>
+
 <!--have horizontal scrolling-->
 <div style="width: 100%; overflow-x: auto;">
     <table class="table table-responsive">
         <thead>
             <tr class="table-active">
                 <th>
-                    @Html.DisplayNameFor(model => model.Email)
+                    @Html.DisplayNameFor(model => model.First().Email)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstName)
+                    @Html.DisplayNameFor(model => model.First().FirstName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.LastName)
+                    @Html.DisplayNameFor(model => model.First().LastName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                    @Html.DisplayNameFor(model => model.First().PhoneNumber)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Membership)
+                    @Html.DisplayNameFor(model => model.First().Membership)
                 </th>
 
                 <th>
-                    @Html.DisplayNameFor(model => model.MembershipDuration)
+                    @Html.DisplayNameFor(model => model.First().MembershipDuration)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.MembershipExpiry)
+                    @Html.DisplayNameFor(model => model.First().MembershipExpiry)
                 </th>
                 <th></th>
             </tr>
@@ -95,3 +121,50 @@
         </tbody>
     </table>
 </div>
+
+@*code for display number of pages *@
+@Html.PagedListPager(Model, page => Url.Action("Index",
+        new { Page = page }),
+        new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" }
+    })
+
+
+<!--AJAX-->
+<script type="text/javascript">
+    function XAjaxRequest(searchString) {
+        if (searchString.length < 3) {
+            //on deleting input to enter something else, needs clear
+            document.getElementById("autoSuggestContainer").innerHTML = "";
+            return;
+        }
+        var xmlhttp;
+        xmlhttp = new XMLHttpRequest();
+        //url must be matching with the ControllerName/ActionMethod
+        var url = "/ManageUser/IndexAJAX?searchString=" + searchString;
+        xmlhttp.open("GET", url, false);
+        xmlhttp.send();
+        //displays the suggested div
+        document.getElementById("autoSuggestContainer").style.display = "block";
+        document.getElementById("autoSuggestContainer").innerHTML = "";
+
+        var messageObject = JSON.parse(xmlhttp.responseText); // receive the respose text
+
+        var autoSuggestions = "";
+
+        for (var i = 0; i < messageObject.length; i++) {
+            autoSuggestions +=
+                // + messageObject[i].FirstName + "\" " + messageObject[i].LastName + "\" "
+
+                "<input type=\"button\" value=\"" + messageObject[i].FirstName + "\" "
+                //once suggested was clicked  --> it will change the input search to suggested string
+                + "onclick=\"document.getElementById('searchString').value = this.value; document.getElementById('searchForm').submit();\" "
+                + "style =\"width: 280px\" />";
+            autoSuggestions += "<br />";
+        }
+        //place the generated buttons HTML code inside the display div
+        document.getElementById("autoSuggestContainer").innerHTML = autoSuggestions;
+    }
+</script>

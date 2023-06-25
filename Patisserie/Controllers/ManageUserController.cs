@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Patisserie.Data;
 using Patisserie.Models.DB;
+using X.PagedList;
 
 namespace Patisserie.Controllers
 {
@@ -25,13 +27,41 @@ namespace Patisserie.Controllers
         }
 
 
-        // GET: ManageUser
+        public IActionResult Index(string searchString, int? page)
+        {
+            var pageNumber = page ?? 1;
+            var users = from e in _context.AspNetUsers select e;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                users = users.Where(s => s.LastName.Contains(searchString) || s.FirstName.Contains(searchString));
+            }
+
+            return View(users.ToPagedList(pageNumber, 10));
+        }
+
+        //for the query 
+        public string IndexAJAX(string searchString)
+        {
+            // Search employee by lastname OR firstname
+            string sql = "SELECT * FROM AspNetUsers WHERE FirstName LIKE @p0";
+            string wrapString = "%" + searchString + "%";
+
+            // Execute the SQL query and retrieve the matching users
+            List<AspNetUser> queryUsers = _context.AspNetUsers.FromSqlRaw(sql, wrapString, wrapString).ToList();
+
+            // Convert the query result to a JSON string
+            string json = JsonConvert.SerializeObject(queryUsers);
+            return json;
+        }
+
+
+        /*// GET: ManageUser
         public async Task<IActionResult> Index()
         {
               return _context.AspNetUsers != null ? 
                           View(await _context.AspNetUsers.ToListAsync()) :
                           Problem("Entity set 'FSWD2023fabi18Context.AspNetUsers'  is null.");
-        }
+        }*/
 
         // GET: ManageUser/Details/5
         public async Task<IActionResult> Details(string id)

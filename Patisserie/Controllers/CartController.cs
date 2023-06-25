@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Patisserie.Data;
 using Patisserie.Models.DB;
 
 namespace Patisserie.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
         private readonly FSWD2023fabi18Context _context;
@@ -18,92 +20,6 @@ namespace Patisserie.Controllers
             _userManager = userManager;
         }
 
-
-        /* public async Task<IActionResult> Index()
-         {
-             var cart = SessionHelper.GetObjectFromJson<List<CartItems>>(HttpContext.Session, "cart");
-             if (cart != null)
-             {
-                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
-
-                 MemberShip member = new MemberShip()
-                 {
-
-                     FirstName = user.FirstName,
-                     LastName = user.LastName,
-                     Email = user.Email,
-                     Membership = user.Membership,
-                     MembershipDuration = user.MembershipDuration,
-                     MembershipExpiry = user.MembershipExpiry
-                 };
-
-                 if (member.Membership == "gold" && member.MembershipExpiry > DateTime.Now)
-                 {
-                     ViewBag.Cart = cart;
-
-                     //Hosam: string message to display the discount amount to each user
-                     string msg = "As a Gold member - Your order includes a 14% Discount";
-
-                     //Akhil: calculations of doscount and total for each member
-                     double discount = 0.14;
-                     decimal total = cart.Sum(item => item.Cake.Price * item.Quantity) * decimal.Parse(discount.ToString());
-                     decimal discounted = cart.Sum(item => item.Cake.Price * item.Quantity) - total;
-
-                     ViewBag.msg = msg;
-                     ViewBag.total = Math.Round(discounted, 2);
-                     ViewBag.Discount = Math.Round(discount * 100, 2);
-                 }
-                 else if (member.Membership == "silver" && member.MembershipExpiry > DateTime.Now)
-                 {
-                     ViewBag.Cart = cart;
-
-                     //Hosam: string message to display the discount amount to each user
-                     string msg = "As a Silver member - Your order includes a 9% Discount";
-
-                     //Akhil: calculations of doscount and total for each member
-                     double discount = 0.09;
-                     decimal total = cart.Sum(item => item.Cake.Price * item.Quantity) * decimal.Parse(discount.ToString());
-                     Math.Round(total, 2);
-                     decimal discounted = cart.Sum(item => item.Cake.Price * item.Quantity) - total;
-
-                     ViewBag.msg = msg;
-                     ViewBag.total = Math.Round(discounted, 2);
-                     ViewBag.Discount = Math.Round(discount * 100, 2);
-                 }
-                 else if (member.Membership == "bronze" && member.MembershipExpiry > DateTime.Now)
-                 {
-                     ViewBag.Cart = cart;
-
-                     //Hosam: string message to display the discount amount to each user
-                     string msg = "As a Bronze member - Your order includes a 6% Discount";
-
-                     //Akhil: calculations of doscount and total for each member
-                     double discount = 0.06;
-                     decimal total = cart.Sum(item => item.Cake.Price * item.Quantity) * decimal.Parse(discount.ToString());
-                     Math.Round(total, 2);
-                     decimal discounted = cart.Sum(item => item.Cake.Price * item.Quantity) - total;
-
-                     //returning discount message using viewBag
-                     ViewBag.msg = msg;
-                     ViewBag.total = Math.Round(discounted, 2);
-                     ViewBag.Discount = Math.Round(discount * 100, 2);
-                 }
-                 else
-                 {
-                     ViewBag.Cart = cart;
-
-                     decimal total = cart.Sum(item => item.Cake.Price * item.Quantity);
-
-                     ViewBag.total = Math.Round(total, 2);
-                 }
-
-             }
-             else if (cart == null)
-                 ViewBag.Empty = "Empty";
-
-
-             return View();
-         }*/
         public async Task<IActionResult> Index()
         {
             var cartItems = HttpContext.Session.Get<List<CartItem>>("CartItems");
@@ -134,11 +50,11 @@ namespace Patisserie.Controllers
                         totalPrice += totalPriceForItem; // Add the item's total price to the overall total price
                     }
 
+                    //Your membership expiry is {membershipExpiry.Date.ToString("yyyy-MM-dd")}"
                     // Set the ViewBag message, discounted total price, and item prices
-                    ViewBag.MembershipMessage = $"You are a {membershipType} member. You have a {discountPercentage:P0} discount. Your membership expiry is {membershipExpiry.Date.ToString("yyyy-MM-dd")}";
+                    ViewBag.MembershipMessage = $"You are a {membershipType} member. You have a {discountPercentage:P0} discount";
                     ViewBag.DiscountedTotal = totalPrice.ToString("N2");
                 }
-
             }
 
             return View(cartItems);
@@ -167,11 +83,6 @@ namespace Patisserie.Controllers
 
             return discountPercentage;
         }
-
-
-
-
-
 
         public IActionResult AddToCart(int id)
         {

@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Humanizer;
+using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Patisserie.Models.DB;
 using X.PagedList;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Patisserie.Controllers
 {
@@ -30,7 +34,19 @@ namespace Patisserie.Controllers
             return View(await fSWD2023fabi18Context.ToListAsync());
         }*/
 
-        //modified to take parameters
+        /*   public ActionResult FilteredProducts(string category, string searchString, int? page)
+           {
+               var pageNumber = page ?? 1;
+
+               var product = _context.Products.Where(ct => ct.Category.Name == category).Include(c => c.Category);
+               if (!String.IsNullOrEmpty(searchString))
+               {
+                   product = product.Where(p => p.Name.Contains(searchString)).Include(c => c.Category);
+               }
+               return View(product.ToPagedList(pageNumber, 9));
+           }*/
+
+        /*//modified to take parameters
         public async Task<IActionResult> Index(string searchString, int? page)
         {
             var pageNumber = page ?? 1;
@@ -41,15 +57,50 @@ namespace Patisserie.Controllers
                 product = product.Where(p => p.Name.Contains(searchString)).Include(c => c.Category);
             }
             return View(product.ToPagedList(pageNumber, 9));
+        }*/
+
+
+        // Modified to take parameters
+        public async Task<IActionResult> Index(string searchString, string category, int? page)
+        {
+            var pageNumber = page ?? 1;
+
+            var product = _context.Products.Include(p => p.Category);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                product = product.Where(p => p.Name.Contains(searchString)).Include(c => c.Category);
+            }
+            if (!String.IsNullOrEmpty(category))
+            {
+                if (category == "New")
+                {
+                    product = product.Where(p => p.Category.Name == "New").Include(c => c.Category);
+                }
+                else if (category == "Popular")
+                {
+                    product = product.Where(p => p.Category.Name == "Popular").Include(c => c.Category);
+                }
+                else if (category == "Special")
+                {
+                    product = product.Where(p => p.Category.Name == "Special").Include(c => c.Category);
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return View(product.ToPagedList(pageNumber, 10));
         }
+  
 
         //search for a product
         public string IndexAJAX(string searchString)
         {
             string sql = "SELECT * FROM Product WHERE Name LIKE @p0";
             string wrapString = "%" + searchString + "%";
-            List<Product> cakes = _context.Products.FromSqlRaw(sql, wrapString).ToList();
-            string json = JsonConvert.SerializeObject(cakes);
+            List<Product> prod = _context.Products.FromSqlRaw(sql, wrapString).ToList();
+            string json = JsonConvert.SerializeObject(prod);
             return json;
         }
 
@@ -72,12 +123,23 @@ namespace Patisserie.Controllers
             return View(product);
         }
 
+        public ActionResult GetSpecialProducts()
+        {
+            // Logic to retrieve products with the "special" category
+            var specialProducts = _context.Products.Where(p => p.Name == "Special").ToList();
+
+            return View(specialProducts);
+        }
+
+
+
         // GET: Product/Create
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name");
             return View();
         }
+
 
         // POST: Product/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -150,7 +212,7 @@ namespace Patisserie.Controllers
                         await image.CopyToAsync(fileStream);
                     }
                     product.Image = uniqueFileName;
-                }
+                } 
                 try
                 {
                     _context.Update(product);

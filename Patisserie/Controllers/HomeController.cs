@@ -1,22 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Patisserie.Models;
+using Patisserie.Models.DB;
 using System.Diagnostics;
+using X.PagedList;
 
 namespace Patisserie.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly FSWD2023fabi18Context _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(FSWD2023fabi18Context context)
         {
-            _logger = logger;
+            _context = context;
         }
+
 
         public IActionResult Index()
         {
             return View();
         }
+    
+      /*  public ActionResult GetSpecialProducts()
+        {
+            var specialProducts = _context.Products.Where(p => p.Name == "Special").ToList();
+
+            return View(specialProducts);
+        }*/
 
         public IActionResult Privacy()
         {

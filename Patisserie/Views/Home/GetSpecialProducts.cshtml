@@ -1,0 +1,115 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@using X.PagedList;
+@model IPagedList<Patisserie.Models.DB.Product>
+@{
+    ViewData["Title"] = "Index";
+}
+<head>
+    @*using fontawesome kit for icons styling*@
+    <script src="https://kit.fontawesome.com/1269185472.js" crossorigin="anonymous"></script>
+</head>
+<h3>Home</h3>
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-5">
+        <form class="card card-sm border-0" id="searchForm" action="/Home/GetSpecialProducts" method="get" autocomplete="off">
+            <div class="card-body row">
+                <div class="col">
+                    <div class="input-group">
+                        <input type="text" id="searchString" name="searchString" class="form-control form-control-lg rounded"
+                               autocomplete="off" onkeyup="XAjaxRequest(this.value);" placeholder="Search products" required>
+                    </div>
+                </div>
+
+                <div class="col-auto">
+                    <button class="btn btn-lg btn-success" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div id="autoSuggestContainer" class="autoSuggest" style="border: none;"></div>
+    </div>
+</div>
+
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card h-100">
+                <a asp-action="Details" asp-route-id="@item.ProductId">
+                    <img src="@Url.Content("~/uploads/" + item.Image)" alt="Product Image" class="card-img-top">
+                </a>
+                <div class="card-body">
+                    <a asp-action="Details" asp-route-id="@item.ProductId">
+                        <h5 class="card-title no-link-style">@Html.DisplayFor(modelItem => item.Name)</h5>
+                        <h6 class="card-subtitle no-link-style">@Html.DisplayFor(modelItem => item.Category.Name)</h6>
+                    </a>
+                    <p class="card-text">@Html.Raw(item.Description)</p>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <h6 class="card-title">$@Html.DisplayFor(modelItem => item.Price) <span class="currency">NZD</span></h6>
+                    <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.ProductId" class="btn btn-md btn-primary">Add to Cart</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@*code for display number of pages *@
+@Html.PagedListPager(Model, page => Url.Action("Index",
+        new { Page = page }),
+        new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" }
+    })
+
+
+
+@*Javascript for the auto suggestion*@
+<script type="text/javascript">
+    function XAjaxRequest(searchString) {
+        if (searchString.length < 1) {
+            autoSuggestContainer.innerHTML = "";
+            autoSuggestContainer.classList.remove("show-border");
+            return;
+        } else {
+            autoSuggestContainer.classList.add("show-border");
+        }
+
+
+        //alert("testing searchString=" + searchString);
+        var xmlhttp;
+        xmlhttp = new XMLHttpRequest();
+        var url = "/Home/GetSpecialProducts?searchString=" + searchString;
+        // open connection, GET is quick and simple, false: sync page will freeze
+        xmlhttp.open("GET", url, false);
+        // send the request to IndexAJAX
+        xmlhttp.send();
+        document.getElementById("autoSuggestContainer").style.display = "block";
+        //need to clear out the container for a fresh auto-suggest list
+        //else the auto-suggest list can keep growing and growing with additional user keyups
+        document.getElementById("autoSuggestContainer").innerHTML = "";
+
+        var messageObject = JSON.parse(xmlhttp.responseText); // receive the respose text
+
+        var autoSuggestions = "";
+
+        for (var i = 0; i < messageObject.length; i++) {
+            //HTML code generation demo
+            //Works together with the ".innerHTML" statement after the end of this "for" block
+            autoSuggestions +=
+                "<input type=\"button\" value=\"" + messageObject[i].Name + "\" "
+                + "onclick=\"document.getElementById('searchString').value = this.value; document.getElementById('searchForm').submit();\" "
+                + "/>";
+            autoSuggestions += "<br />";
+        }
+        //place the generated buttons HTML code inside the display div
+        document.getElementById("autoSuggestContainer").innerHTML = autoSuggestions;
+    }
+</script>

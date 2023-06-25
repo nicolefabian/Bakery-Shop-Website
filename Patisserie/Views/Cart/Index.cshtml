@@ -90,16 +90,27 @@
 
                                         <div class="card rounded-3 mb-4 h-100">
                                             <div class="card-body p-4 h-100">
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="alert alert-dismissible alert-light" id="success-message">
+                                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                                            <strong>@ViewBag.MembershipMessage</strong>
+                                                        </div>
+                                                        <input id="GrandTotal" type="hidden" value="@ViewBag.DiscountedTotal" />
+                                                    </div>
+                                                </div>
                                                 <div class="row d-flex justify-content-between align-items-center mb-4">
                                                     <div class="col">
                                                         <h6 class="mb-0">Total</h6>
                                                     </div>
+
                                                     <div class="col">
                                                         <h6 class="mb-0 text-end">$@ViewBag.DiscountedTotal <span class="currency">nzd</span></h6>
                                                         <input id="GrandTotal" type="hidden" value="@ViewBag.DiscountedTotal" />
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="row justify-content-center">
                                                     <div class="col text-center">
                                                         <div id="paypal-button-container"></div>
@@ -115,7 +126,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </section>
 
 
@@ -138,16 +148,14 @@
         onApprove: function (data, actions) {
             // This function captures the funds from the transaction.
             return actions.order.capture().then(function (details) {
-                // Show a transaction success message to the buyer
-                alert('Transaction completed by ' + details.payer.name.given_name);
-
-                // Clear the cart and display a thank you message after a delay
-                setTimeout(function () {
-                    window.location.href = '@Url.Action("ClearCart","Cart")';
-                }, 3000); // Replace 3000 with the desired delay in milliseconds
+                // This function shows a transaction success message to your buyer.
+                // When ready to go live, remove the alert and show a success message within this page. For example:
+                const element = document.getElementById('paypal-button-container');
+                element.innerHTML = '<h3>Thank you for your payment!</h3>' +
+                    '<br><h4>Transaction completed by ' + details.payer.name.given_name + '</h4>';
+                window.location.href = '@Url.Action("ClearCart","Cart")';
             });
         }
-
 
     }).render('#paypal-button-container');
 </script>

@@ -2,25 +2,131 @@
     ViewData["Title"] = "About Patisserie";
 }
 
-<div class="row about-us-page">
-    <div class="col-7 about-us-form">
-        <h3> About Patisserie </h3>
-        <br /> 
-        <p>
-            Welcome to our Patisserie Bakery, where passion for exquisite pastries meets the art of baking. We take pride in crafting delectable creations that delight both the eyes and the palate. Step into our world of irresistible aromas, mouthwatering flavors, and unparalleled craftsmanship. <br /> <br />
 
-            At our Patisserie Bakery, we believe that every bite should be a moment of pure bliss. That's why we source only the finest ingredients, meticulously selecting each component to ensure the highest quality and taste. From premium chocolates and freshly picked fruits to delicate spices and rich creams, every ingredient is thoughtfully chosen to create a symphony of flavors in our pastries. <br /> <br />
+<!--BANNER-->
+<div class="banner mb-5 mt-2">
+    <img src="~/uploads/aboutus.jpg" alt="About Us banner">
+</div>
 
-            Our team of talented bakers and pastry chefs combines their expertise and creativity to bring you a diverse range of treats that cater to every indulgence. From delicate macarons with their crisp shells and luscious fillings to flaky croissants that transport you to the streets of Paris, each item is crafted with precision and passion.<br /> <br />
+<!--HISTORY-->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="about-us">
+                <div class="container p-5">
+                    <p class="siteName" style="text-align:left;">History</p>
+                    <p class="siteDesc">Our bakery has a rich history that spans over three generations. It all started in the small town of Smithville in the early 1950s when our founder, John Smith, opened a modest pastry shop. With a passion for baking and a commitment to quality, John quickly gained a loyal customer base who adored his delectable treats</p>
+                </div>
+            </div>
+        </div>
 
-            We believe that beauty is as important as taste. That's why we take great care in the presentation of our pastries. Each creation is a work of art, meticulously adorned with intricate designs, delicate drizzles, and vibrant colors. We strive to create an experience that not only satisfies your cravings but also ignites your senses and brings joy to your day.<br /> <br />
-
-            Whether you're celebrating a special occasion, treating yourself to a well-deserved indulgence, or simply looking to brighten your day with a sweet delight, our Patisserie Bakery is here to serve you. We invite you to immerse yourself in the world of heavenly flavors, exquisite textures, and the undeniable magic of our artisanal pastries.<br /> <br />
-
-            Visit us today and let us take you on a journey through the world of taste and elegance. From the first bite to the last, we aim to create memories and moments that will linger on your palate and in your heart.
-        </p>
+        <!--images-->
+        <div class="col-md-6">
+            <div class="image-container">
+                <div class="row">
+                    <div class="col-md-6 mb-5 mt-4">
+                        <div class="image-wrapper">
+                            <img src="~/uploads/history1.jpg" alt="Kneading dough image" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-5 mt-4">
+                        <div class="image-wrapper">
+                            <img src="~/uploads/history2.jpg" alt="Adding flour image" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="image-wrapper">
+                            <img src="~/uploads/history3.jpg" alt="Bakery products image" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="image-wrapper">
+                            <img src="~/uploads/history4.jpg" alt="More bakery products image" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-5">
-        @*<img src="~/images/cakeAboutUs01.jpg" />*@
+</div>
+
+<!--ABOUT US-->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 about-us-image">
+            <div>
+                <img src="~/uploads/aboutusimage.jpg" alt="Image 1" class="img-fluid" style="max-height: 100%;">
+            </div>
+        </div>
+        <!-- Description -->
+        <div class="col-md-6">
+            <div class="about-us">
+                <div class="container p-5">
+                    <p class="siteName">About Us</p>
+                    <p class="siteDesc">
+                        We take pride in using only the finest ingredients, sourced locally whenever possible, to ensure the highest quality in our products. From our freshly baked bread, flaky pastries, and delightful cakes to our mouthwatering cookies and indulgent desserts, each creation is made with love and attention to detail.
+                        But our commitment extends beyond our delectable treats. We believe in fostering a warm and welcoming atmosphere, where every customer is greeted with a friendly smile and receives personalized service. We value the relationships we have built with our community, and it is our goal to create lasting memories and experiences that keep our customers coming back for more.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!---VALUES--->
+
+<div class="container mb-2 mt-5">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card border h-100">
+                <img src="~/uploads/values1.jpg" class="card-img-top" alt="Authenticity Image">
+                <div class="card-body">
+                    <h4 class="card-title text-center">Authenticity</h4>
+                    <div class="card-text values">
+                        <p>Preserving traditional baking methods and recipes, celebrating heritage and cultural influences, and maintaining a genuine connection to the bakery's roots.</p>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card border h-100">
+                <img src="~/uploads/values2.jpg" class="card-img-top" alt="Quality Image">
+                <div class="card-body">
+                    <h4 class="card-title text-center">Quality</h4>
+                    <div class="card-text values">
+                        <p>Striving to deliver the highest quality baked goods by using fresh and premium ingredients, precise techniques, and attention to detail.</p>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card border h-100">
+                <img src="~/uploads/values3.png" class="card-img-top" alt="Customer Satisfaction Image">
+                <div class="card-body">
+                    <h4 class="card-title text-center">Customer Satisfaction</h4>
+                    <div class="card-text values">
+                        <p>Placing a strong emphasis on customer satisfaction by ensuring friendly and attentive service, listening to customer feedback, and meeting their expectations.</p>
+                    </div>
+                 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--MORE SHOP DESCRIPTION-->
+<br />
+<div class="about-us mb-5">
+    <div class="container">
+        <p class="siteName"></p>
+        <p class="siteDesc">Whether you're celebrating a special occasion, looking for a treat to brighten your day, or simply indulging in a moment of self-care, Patisserie is here to delight your senses and satisfy your cravings. Join us on this sweet journey and let us be a part of your special moments.</p>
     </div>
 </div>

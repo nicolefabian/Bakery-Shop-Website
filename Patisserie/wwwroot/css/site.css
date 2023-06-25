@@ -108,3 +108,129 @@ body {
         text-decoration: none;
         color: inherit;
     }
+
+
+/*HOME PAGE*/
+
+.carousel-inner > div {
+    max-height: 400px;
+}
+
+    .carousel-inner > div img {
+        max-height: 400px;
+        object-fit: cover;
+    }
+
+
+.about-us {
+    background-color: #f8f8f8;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.siteName, .categoryName {
+    color: #2C3E50;
+    font-size: 45px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
+.siteDesc {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 600px;
+    text-align: justify;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/*tutoriaL from: https://www.youtube.com/watch?v=2b8ItkuUbwA*/
+@keyframes blink {
+    50% {
+        opacity: 0
+    }
+    80% {
+        color: #1D9463;
+        opacity: .5
+    }
+}
+
+.memberTitle {
+    animation: blink 2s linear infinite;
+    color: #333;
+    font-size: 45px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+
+
+.justify-center {
+    text-align: justify;
+    text-align-last: center;
+}
+
+
+/*hover effect from here: https://www.youtube.com/watch?v=KAHjf1Xj0SU*/
+.card { 
+    transition: all 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.btn-primary:hover {
+    background-color: #1D9463;
+    border-color: #1D9463;
+}
+
+/*ABOUT US PAGE*/
+
+.banner {
+    width: 100%;
+    height: 300px;
+    position: relative;
+}
+
+    .banner img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+.values {
+    color: #2C3E50;
+    text-align: justify;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-title {
+    color: #2C3E50;
+}
+
+.image-container .image-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-container img {
+    height: 100%;
+    width: auto;
+}
