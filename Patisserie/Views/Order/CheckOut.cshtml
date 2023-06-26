@@ -1,75 +1,12 @@
-﻿@*@model IEnumerable<Patisserie.Models.DB.Order>
-
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Total)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MemberId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.MemberId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-*@
-
-
-@model IEnumerable<Patisserie.Models.DB.Order>
+﻿@model List<CartItem>
 @using System.Globalization;
 @using Patisserie.Models.DB;
 
+<!--replaced by own sandbox client id-->
 <script src="https://www.paypal.com/sdk/js?client-id=AXiwmPS17nETGML3vSh4eSbR6iQC7y4cenyiMqYycsyhdAkktAriU1bjWU6LtVjgMdjr4ivDkXY4HBGX">
-    // Required. Replace SB_CLIENT_ID with your sandbox client ID.
 </script>
 
-
-
+<!--ORDER-->
 <!--free card layout found here: https://mdbootstrap.com/docs/standard/extended/shopping-carts/ and was modified to fit requirements-->
 <section class="h-100 h-custom" style="background-color: #eee;">
     <div class="container p-5 h-100">
@@ -79,98 +16,100 @@
                     <div class="card-body p-0">
                         <div class="row g-0">
                             <div class="col-lg-8">
-                                <div class="p-5 pb-1 pl-4 pr-5">
-                                    <p>
-                                        <a asp-controller="Product" asp-action="Index" class="text-body link-unstyled">
-                                            <i class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping
-                                        </a>
-                                    </p>
-                                </div>
-                                <div class="p-5">
-                                    <div class="d-flex justify-content-between align-items-center mb-5">
-                                        <h4 class="fw-bold mb-0 text-black">Shopping Cart</h4>
-                                        <a href="@Url.Action("ClearCart", "Cart")" class="text-muted link-unstyled">Clear Cart</a>
+                                
+
+                                <hr class="my-4">
+                                <!-- Cart items -->
+                                @if (Model == null)
+                                {
+                                    <div class="p-5 pb-1 pl-4 pr-5">
+                                        <p>
+                                            <a asp-controller="Product" asp-action="Index" class="text-body link-unstyled">
+                                                <i class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping
+                                            </a>
+                                        </p>
                                     </div>
-                                    <hr class="my-4">
-                                    <!-- Cart items -->
-                                    @if (ViewBag.CartItems == null)
-                                    {
+                                    <div class="p-5">
+                                        <div class="d-flex justify-content-between align-items-center mb-5">
+                                            <h4 class="fw-bold mb-0 text-black">Shopping Cart</h4>
+                                        </div>
                                         <div class="row mb-4 d-flex justify-content-between align-items-center">
                                             <div class="col-12">
-                                                <p>Your shopping cart is empty.</p>
+                                                <p>@ViewBag.UserDetails</p>
                                             </div>
                                         </div>
-                                    }
-                                    else
-                                    {
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        @Html.DisplayNameFor(model => model.Email)
-                                                    </th>
-                                                    <th>
-                                                        @Html.DisplayNameFor(model => model.FirstName)
-                                                    </th>
-                                                    <th>
-                                                        @Html.DisplayNameFor(model => model.LastName)
-                                                    </th>
-                                                    <th>
-                                                        @Html.DisplayNameFor(model => model.Total)
-                                                    </th>
-                                                    <th>
-                                                        @Html.DisplayNameFor(model => model.Member)
-                                                    </th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var item in Model)
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="p-5 pb-1 pl-4 pr-5">
+                                        <p>
+                                            <a asp-controller="Product" asp-action="Index" class="text-body link-unstyled">
+                                                <i class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div class="p-5">
+                                        <div class="d-flex justify-content-between align-items-center mb-5">
+                                            <h4 class="fw-bold mb-0 text-black">Shopping Cart</h4>
+                                            <a href="@Url.Action("ClearCart", "Order")" class="text-muted link-unstyled">Clear Cart</a>
+                                        </div>
+                                        <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                            @foreach (var item in Model)
+                                            {
+                                                if (item != null)
                                                 {
-                                                    <tr>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.Email)
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.FirstName)
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.LastName)
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.Total)
-                                                        </td>
-                                                        <td>
-                                                            @Html.DisplayFor(modelItem => item.Member.MemberId)
-                                                        </td>
-                                                        <td>
-                                                            <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
-                                                            <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
-                                                            <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
-                                                        </td>
-                                                    </tr>
+                                                    <!-- image -->
+                                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                                        <img src="@Url.Content("~/uploads/" + item.Product.Image)" class="img-fluid rounded-3" alt="Product Image" />
+                                                    </div>
+                                                    <!-- product name -->
+                                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                                        <p>@item.Product.Name</p>
+                                                    </div>
+                                                    <!-- price -->
+                                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                                        <p>@item.Product.Price.ToString("c", CultureInfo.CurrentCulture)</p>
+                                                    </div>
+                                                    <!-- quantity -->
+                                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                                        <p class="button_actions m-2">@item.Quantity</p>
+                                                    </div>
+                                                    <!-- delete -->
+                                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                                        <a asp-controller="Order" asp-route-id="@item.ProductId" asp-action="RemoveFromCart" class="text-muted">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </a>
+                                                    </div>
+                                                    <hr class="my-4">
                                                 }
-                                            </tbody>
-                                        </table>
-                                    }
-                                </div>
-                            </div>
+                                                else
+                                                {
+                                                    <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                                        <div class="col-12">
+                                                            <p>Your shopping cart is empty.</p>
+                                                        </div>
+                                                    </div>
+                                                }
 
-                            @if (ViewBag.CartItems != null)
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            @if (Model != null)
                             {
                                 <div class="col-lg-4 bg-primary rounded">
                                     <div class="p-5">
                                         <div class="col-lg-12">
                                             <h4 class="fw-bold text-white mb-4 mt-2 pt-1">Summary</h4>
                                             <hr class="my-3 text-white">
-                                            <a asp-action="CheckOut" asp-controller="Order" class="btn btn-info btn-sm button_actions">Checkout</a>
+
                                             <div class="card rounded-3 mb-4 h-100">
                                                 <div class="card-body p-4 h-100">
                                                     <div class="row">
                                                         <div class="col">
-                                                            <div class="alert alert-light" id="success-message">
-                                                                <strong>@ViewBag.MembershipMessage</strong>
-                                                            </div>
+                                                         
                                                             <input id="GrandTotal" type="hidden" value="@ViewBag.DiscountedTotal" />
                                                         </div>
                                                     </div>
@@ -183,6 +122,7 @@
                                                             <input id="GrandTotal" type="hidden" value="@ViewBag.DiscountedTotal" />
                                                         </div>
                                                     </div>
+
                                                     <div class="row justify-content-center">
                                                         <div class="col text-center">
                                                             <div id="paypal-button-container"></div>
@@ -224,28 +164,9 @@
             return actions.order.capture().then(function (details) {
                 // This function shows a transaction success message to your buyer.
                 // When ready to go live, remove the alert and show a success message within this page. For example:
-                const successMessage = document.getElementById('success-message');
-                successMessage.style.display = 'block';
-                successMessage.innerHTML = '<strong>@ViewBag.MembershipMessage</strong>';
-                // Hide the PayPal button
-                const paypalButton = document.getElementById('paypal-button-container');
-                paypalButton.style.display = 'none';
+                window.location.href = '@Url.Action("ClearCartAfterPayment","Order")';
             });
         }
 
     }).render('#paypal-button-container');
 </script>
-
-
-@*
-<script>
-    function updateQuantity(productId, change) {
-        var quantityElement = document.getElementById("quantity-" + productId);
-        var quantity = parseInt(quantityElement.innerText);
-        quantity += change;
-        if (quantity < 1) {
-            quantity = 1;
-        }
-        quantityElement.innerText = quantity;
-    }
-</script>*@

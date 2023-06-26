@@ -52,24 +52,18 @@ namespace Patisserie.Controllers
                             MemberId = member.MemberId // Set the member ID
                         };
 
-                        // Save the order to the database
+                        ViewBag.DiscountedTotal = CalculateTotal(cartItems).ToString("N2"); ;
+
+                   /*     // Save the order to the database
                         _context.Orders.Add(order);
-                        _context.SaveChanges();
+                        _context.SaveChanges();*/
 
-                        // Clear the cart items
-                        ClearCart();
-
-                        return RedirectToAction("Index", "Order");
-                    }
-                    else
-                    {
-                        // Handle the case when the cart is empty
-                        ModelState.AddModelError(string.Empty, "The cart is empty. Please add items to your cart before checking out.");
+                        return View(cartItems);
                     }
                 }
             }
 
-            return View("Error"); // Handle the case when the member is not found or there is no logged-in user
+            return View(); // Handle the case when the member is not found or there is no logged-in user
         }
 
         private decimal CalculateTotal(List<CartItem> cartItems)
@@ -93,6 +87,21 @@ namespace Patisserie.Controllers
         {
             SaveCartItems(new List<CartItem>());
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> ClearCartAfterPayment()
+        {
+            // Get the currently logged-in user
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return View();
+            }
+
+           
+            SaveCartItems(new List<CartItem>());
+            ViewBag.UserDetails = "Order Successful! Thank you " + user.FirstName + " " + user.LastName + "for your payment";
+            return View("CheckOut");
         }
 
         private List<CartItem> GetCartItems()
@@ -129,51 +138,60 @@ namespace Patisserie.Controllers
             return discountPercentage;
         }
 
+        /*   // GET: Order
+           public async Task<IActionResult> Index()
+           {
+               return _context.Orders != null ?
+                           View(await _context.Orders.ToListAsync()) :
+                           Problem("Entity set 'FSWD2023fabi18Context.Orders'  is null.");
+           }*/
 
-
-
-
-        // GET: Order
         public async Task<IActionResult> Index()
         {
-            return _context.Orders != null ?
-                        View(await _context.Orders.ToListAsync()) :
-                        Problem("Entity set 'FSWD2023fabi18Context.Orders'  is null.");
+            var cartItems = HttpContext.Session.Get<List<CartItem>>("CartItems");
+            if (cartItems != null)
+            {
+                // Get the currently logged-in user
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                if (user != null)
+                {
+                    // Get the user's membership level
+                    var membershipType = user.Membership;
+                    var membershipExpiry = user.MembershipExpiry.Date;
+                    decimal discountPercentage = GetDiscountPercentage(membershipType, membershipExpiry);
+
+                    // Apply the membership discount to cart items and calculate total price after discount
+                    decimal totalPrice = 0;
+                    foreach (var item in cartItems)
+                    {
+                        decimal itemPrice = item.Product.Price; // Get the price of the product
+                        decimal discountedPrice = itemPrice - (itemPrice * discountPercentage); // Calculate the discounted price
+                        decimal totalPriceForItem = discountedPrice * item.Quantity; // Calculate the total price for the item (discounted price * quantity)
+                        item.TotalAmount = totalPriceForItem; // Update the total amount for the item
+
+                        totalPrice += totalPriceForItem; // Add the item's total price to the overall total price
+                    }
+                    SaveCartItems(cartItems);
+                    ViewBag.MembershipMessage = $"You are a {membershipType} member. You have a {discountPercentage:P0} discount";
+                    ViewBag.DiscountedTotal = totalPrice.ToString("N2");
+                }
+            }
+
+            return View(cartItems);
         }
 
-        /*    public async Task<IActionResult> Index()
+
+        public IActionResult RemoveFromCart(int productId)
+        {
+            var cartItems = GetCartItems();
+            var cartItem = cartItems.FirstOrDefault(item => item.ProductId == productId);
+            if (cartItem != null)
             {
-                var cartItems = HttpContext.Session.Get<List<CartItem>>("CartItems");
-                if (cartItems != null)
-                {
-                    // Get the currently logged-in user
-                    var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                    if (user != null)
-                    {
-                        // Get the user's membership level
-                        var membershipType = user.Membership;
-                        var membershipExpiry = user.MembershipExpiry.Date;
-                        decimal discountPercentage = GetDiscountPercentage(membershipType, membershipExpiry);
-
-                        // Apply the membership discount to cart items and calculate total price after discount
-                        decimal totalPrice = 0;
-                        foreach (var item in cartItems)
-                        {
-                            decimal itemPrice = item.Product.Price; // Get the price of the product
-                            decimal discountedPrice = itemPrice - (itemPrice * discountPercentage); // Calculate the discounted price
-                            decimal totalPriceForItem = discountedPrice * item.Quantity; // Calculate the total price for the item (discounted price * quantity)
-                            item.TotalAmount = totalPriceForItem; // Update the total amount for the item
-
-                            totalPrice += totalPriceForItem; // Add the item's total price to the overall total price
-                        }
-                        ViewBag.CartItems = cartItems;
-                        ViewBag.MembershipMessage = $"You are a {membershipType} member. You have a {discountPercentage:P0} discount";
-                        ViewBag.DiscountedTotal = totalPrice.ToString("N2");
-                    }
-                }
-
-                return View();
-            }*/
+                cartItems.Remove(cartItem); // Remove the cart item from the list
+            }
+            SaveCartItems(cartItems);
+            return RedirectToAction("Index");
+        }
 
 
         // GET: Order/Details/5

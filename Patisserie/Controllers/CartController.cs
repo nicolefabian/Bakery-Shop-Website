@@ -43,8 +43,8 @@ namespace Patisserie.Controllers
                     foreach (var item in cartItems)
                     {
                         decimal itemPrice = item.Product.Price; // Get the price of the product
-                        decimal discountedPrice = itemPrice - (itemPrice * discountPercentage); // Calculate the discounted price
-                        decimal totalPriceForItem = discountedPrice * item.Quantity; // Calculate the total price for the item (discounted price * quantity)
+                     //   decimal discountedPrice = itemPrice - (itemPrice * discountPercentage); // Calculate the discounted price
+                        decimal totalPriceForItem = itemPrice * item.Quantity; // Calculate the total price for the item (discounted price * quantity)
                         item.TotalAmount = totalPriceForItem; // Update the total amount for the item
 
                         totalPrice += totalPriceForItem; // Add the item's total price to the overall total price
@@ -52,8 +52,8 @@ namespace Patisserie.Controllers
 
                     SaveCartItems(cartItems);
                     // Set the ViewBag message, discounted total price, and item prices
-                    ViewBag.MembershipMessage = $"You are a {membershipType} member. You have a {discountPercentage:P0} discount";
-                    ViewBag.DiscountedTotal = totalPrice.ToString("N2");
+                    ViewBag.Message = "Discounts will apply upon proceeding to checkout";
+                    ViewBag.Total = totalPrice.ToString("N2");
                 }
             }
 

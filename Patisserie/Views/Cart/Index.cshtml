@@ -94,7 +94,7 @@
                                                     <div class="row">
                                                         <div class="col">
                                                             <div class="alert alert-light" id="success-message">
-                                                                <strong>@ViewBag.MembershipMessage</strong>
+                                                                <strong>@ViewBag.Message</strong>
                                                             </div>
                                                             <input id="GrandTotal" type="hidden" value="@ViewBag.DiscountedTotal" />
                                                         </div>
@@ -104,12 +104,12 @@
                                                             <h6 class="mb-0">Total</h6>
                                                         </div>
                                                         <div class="col">
-                                                            <h6 class="mb-0 text-end">$@ViewBag.DiscountedTotal <span class="currency">nzd</span></h6>
-                                                            <input id="GrandTotal" type="hidden" value="@ViewBag.DiscountedTotal" />
+                                                            <h6 class="mb-0 text-end">$@ViewBag.Total <span class="currency">nzd</span></h6>
+                                                            <input id="GrandTotal" type="hidden" value="@ViewBag.Total" />
                                                         </div>                                              
                                                     </div>
                                                     <div class="row d-flexjustify-content-between align-items-center ">
-                                                    <a asp-action="CheckOut" asp-controller="Order" class="btn btn-primary btn-sm button_actions">Checkout</a>
+                                                    <a asp-action="Index" asp-controller="Order" class="btn btn-primary btn-sm button_actions">Proceed to Checkout</a>
                                                     </div>
                                                 </div>
                                             </div>

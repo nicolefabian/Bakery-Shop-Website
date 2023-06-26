@@ -1,66 +1,4 @@
-﻿@*@model IEnumerable<Patisserie.Models.DB.Order>
-
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Total)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MemberId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.MemberId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-
-
-
-@model IEnumerable<Patisserie.Models.DB.Order>
+﻿@model List<CartItem>
 @using System.Globalization;
 @using Patisserie.Models.DB;
 
@@ -68,10 +6,10 @@
     // Required. Replace SB_CLIENT_ID with your sandbox client ID.
 </script>
 
-
+<!--ORDER-->
 
 <!--free card layout found here: https://mdbootstrap.com/docs/standard/extended/shopping-carts/ and was modified to fit requirements-->
-<section class="h-100 h-custom" style="background-color: #eee;">
+@*<section class="h-100 h-custom" style="background-color: #eee;">
     <div class="container p-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12">
@@ -81,7 +19,7 @@
                             <div class="col-lg-8">
                                 <div class="p-5 pb-1 pl-4 pr-5">
                                     <p>
-                                        <a asp-controller="Product" asp-action="Index" class="text-body link-unstyled">
+                                        <a asp-controller="Cart" asp-action="Index" class="text-body link-unstyled">
                                             <i class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping
                                         </a>
                                     </p>
@@ -89,11 +27,11 @@
                                 <div class="p-5">
                                     <div class="d-flex justify-content-between align-items-center mb-5">
                                         <h4 class="fw-bold mb-0 text-black">Shopping Cart</h4>
-                                        <a href="@Url.Action("ClearCart", "Cart")" class="text-muted link-unstyled">Clear Cart</a>
+                                        <a href="@Url.Action("ClearCart", "Order")" class="text-muted link-unstyled">Clear Cart</a>
                                     </div>
                                     <hr class="my-4">
                                     <!-- Cart items -->
-                                    @if (ViewBag.CartItems == null)
+                                    @if ((Model.Count == 0))
                                     {
                                         <div class="row mb-4 d-flex justify-content-between align-items-center">
                                             <div class="col-12">
@@ -104,46 +42,48 @@
                                     else
                                     {
                                         <div class="row mb-4 d-flex justify-content-between align-items-center">
-                                            @foreach (var item in ViewBag.CartItems)
-                                            {
-                                                <!-- image -->
-                                                <div class="col-md-2 col-lg-2 col-xl-2">
-                                                    <img src="@Url.Content("~/uploads/" + item.Product.Image)" class="img-fluid rounded-3" alt="Product Image" />
-                                                </div>
-                                                <!-- product name -->
-                                                <div class="col-md-3 col-lg-3 col-xl-3">
-                                                    <p>@item.Product.Name</p>
-                                                </div>
-                                                <!-- price -->
-                                                <div class="col-md-3 col-lg-3 col-xl-3">
-                                                    <p>@item.Product.Price.ToString("c", CultureInfo.CurrentCulture)</p>
-                                                </div>
-                                                <!-- quantity -->
-                                                <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                                    <!-- Decrease Quantity button -->
-                                                    <button class="btn btn-outline-primary btn-sm">
-                                                        <a asp-controller="Cart" asp-route-id="@item.Product.ProductId" asp-action="DecreaseQuantity" class="no-link-style">-</a>
-                                                    </button>
-                                                    <span class="button_actions m-2">@item.Quantity</span>
-                                                    <!-- Increase Quantity button -->
-                                                    <button class="btn btn-outline-primary btn-sm">
-                                                        <a asp-controller="Cart" asp-route-id="@item.Product.ProductId" asp-action="IncreaseQuantity" class="no-link-style">+</a>
-                                                    </button>
-                                                </div>
-                                                <!-- delete -->
-                                                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                                    <a asp-controller="Cart" asp-route-id="@item.ProductId" asp-action="RemoveFromCart" class="text-muted">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </a>
-                                                </div>
-                                                <hr class="my-4">
+                                            @foreach (var item in Model)
+                                            { 
+                                                if(item != null)
+                                                {
+                                                    <!-- image -->
+                                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                                        <img src="@Url.Content("~/uploads/" + item.Product.Image)" class="img-fluid rounded-3" alt="Product Image" />
+                                                    </div>
+                                                    <!-- product name -->
+                                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                                        <p>@item.Product.Name</p>
+                                                    </div>
+                                                    <!-- price -->
+                                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                                        <p>@item.Product.Price.ToString("c", CultureInfo.CurrentCulture)</p>
+                                                    </div>
+                                                    <!-- quantity -->
+                                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                                        <p class="button_actions m-2">@item.Quantity</p>
+                                                    </div>
+                                                    <!-- delete -->
+                                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                                        <a asp-controller="Order" asp-route-id="@item.ProductId" asp-action="RemoveFromCart" class="text-muted">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </a>
+                                                    </div>
+                                                    <hr class="my-4">
+                                                } else
+                                                {
+                                                    <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                                        <div class="col-12">
+                                                            <p>Your shopping cart is empty.</p>
+                                                        </div>
+                                                    </div>
+                                                }
+
                                             }
                                         </div>
                                     }
                                 </div>
                             </div>
-
-                            @if (ViewBag.CartItems != null)
+                            @if ((Model.Count != 0))
                             {
                                 <div class="col-lg-4 bg-primary rounded">
                                     <div class="p-5">
@@ -171,7 +111,139 @@
                                                         </div>
                                                     </div>
                                                     <div class="row d-flexjustify-content-between align-items-center ">
-                                                        <a asp-action="Index" asp-controller="Order" class="btn btn-primary btn-sm button_actions">Proceed to Payment</a>
+                                                        <a asp-action="CheckOut" asp-controller="Order" class="btn btn-primary btn-sm button_actions">Proceed to Payment</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>*@
+<section class="h-100 h-custom" style="background-color: #eee;">
+    <div class="container p-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+                <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                    <div class="card-body p-0">
+                        <div class="row g-0">
+                            <div class="col-lg-8">
+
+
+                                <hr class="my-4">
+                                <!-- Cart items -->
+                                @if (Model.Count == 0)
+                                {
+                                    <div class="p-5 pb-1 pl-4 pr-5">
+                                        <p>
+                                            <a asp-controller="Product" asp-action="Index" class="text-body link-unstyled">
+                                                <i class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div class="p-5">
+                                        <div class="d-flex justify-content-between align-items-center mb-5">
+                                            <h4 class="fw-bold mb-0 text-black">Shopping Cart</h4>
+                                        </div>
+                                        <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                            <div class="col-12">
+                                                <p>Your shopping cart is empty.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="p-5 pb-1 pl-4 pr-5">
+                                        <p>
+                                            <a asp-controller="Product" asp-action="Index" class="text-body link-unstyled">
+                                                <i class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div class="p-5">
+                                        <div class="d-flex justify-content-between align-items-center mb-5">
+                                            <h4 class="fw-bold mb-0 text-black">Shopping Cart</h4>
+                                            <a href="@Url.Action("ClearCart", "Order")" class="text-muted link-unstyled">Clear Cart</a>
+                                        </div>
+                                        <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                            @foreach (var item in Model)
+                                            {
+                                                if (item != null)
+                                                {
+                                                    <!-- image -->
+                                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                                        <img src="@Url.Content("~/uploads/" + item.Product.Image)" class="img-fluid rounded-3" alt="Product Image" />
+                                                    </div>
+                                                    <!-- product name -->
+                                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                                        <p>@item.Product.Name</p>
+                                                    </div>
+                                                    <!-- price -->
+                                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                                        <p>@item.Product.Price.ToString("c", CultureInfo.CurrentCulture)</p>
+                                                    </div>
+                                                    <!-- quantity -->
+                                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                                        <p class="button_actions m-2">@item.Quantity</p>
+                                                    </div>
+                                                    <!-- delete -->
+                                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                                        <a asp-controller="Order" asp-route-id="@item.ProductId" asp-action="RemoveFromCart" class="text-muted">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </a>
+                                                    </div>
+                                                    <hr class="my-4">
+                                                }
+                                                else
+                                                {
+                                                    <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                                        <div class="col-12">
+                                                            <p>Your shopping cart is empty.</p>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            @if (Model.Count != 0)
+                            {
+                                <div class="col-lg-4 bg-primary rounded">
+                                    <div class="p-5">
+                                        <div class="col-lg-12">
+                                            <h4 class="fw-bold text-white mb-4 mt-2 pt-1">Summary</h4>
+                                            <hr class="my-3 text-white">
+
+                                            <div class="card rounded-3 mb-4 h-100">
+                                                <div class="card-body p-4 h-100">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="alert alert-light" id="success-message">
+                                                                <strong>@ViewBag.MembershipMessage</strong>
+                                                            </div>
+                                                            <input id="GrandTotal" type="hidden" value="@ViewBag.DiscountedTotal" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row d-flex justify-content-between align-items-center mb-4">
+                                                        <div class="col">
+                                                            <h6 class="mb-0">Total</h6>
+                                                        </div>
+                                                        <div class="col">
+                                                            <h6 class="mb-0 text-end">$@ViewBag.DiscountedTotal <span class="currency">nzd</span></h6>
+                                                            <input id="GrandTotal" type="hidden" value="@ViewBag.DiscountedTotal" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row d-flexjustify-content-between align-items-center ">
+                                                        <a asp-action="CheckOut" asp-controller="Order" class="btn btn-primary btn-sm button_actions">Proceed to Payment</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -186,8 +258,8 @@
         </div>
     </div>
 </section>
-@**@
 
+@*
 @model IEnumerable<Patisserie.Models.DB.Order>
 
 @{
@@ -199,52 +271,60 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Total)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Member)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Total)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MemberId)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Order List</h5>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Total)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Member)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Total)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MemberId)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+*@
