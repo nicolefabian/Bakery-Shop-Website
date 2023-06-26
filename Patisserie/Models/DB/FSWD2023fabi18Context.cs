@@ -220,7 +220,7 @@ namespace Patisserie.Models.DB
 
                 entity.Property(e => e.MemberId).HasColumnName("MemberID");
 
-                entity.Property(e => e.Total).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.Total).HasColumnType("money");
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.Orders)
