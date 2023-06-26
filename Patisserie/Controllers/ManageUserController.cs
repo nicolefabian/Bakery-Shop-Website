@@ -36,24 +36,20 @@ namespace Patisserie.Controllers
                 users = users.Where(s => s.LastName.Contains(searchString) || s.FirstName.Contains(searchString));
             }
 
-            return View(users.ToPagedList(pageNumber, 10));
+            return View(users.ToPagedList(pageNumber, 5));
         }
 
         //for the query 
         public string IndexAJAX(string searchString)
         {
-            // Search employee by lastname OR firstname
             string sql = "SELECT * FROM AspNetUsers WHERE FirstName LIKE @p0";
             string wrapString = "%" + searchString + "%";
 
-            // Execute the SQL query and retrieve the matching users
             List<AspNetUser> queryUsers = _context.AspNetUsers.FromSqlRaw(sql, wrapString, wrapString).ToList();
 
-            // Convert the query result to a JSON string
             string json = JsonConvert.SerializeObject(queryUsers);
             return json;
         }
-
 
         /*// GET: ManageUser
         public async Task<IActionResult> Index()

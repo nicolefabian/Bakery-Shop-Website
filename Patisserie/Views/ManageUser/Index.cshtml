@@ -16,16 +16,8 @@
 </style>
 
 <h4>Manage users</h4>
-<br />
 
-@*<div>
-    <a asp-action="FilterByRole" asp-route-role="StaffAdmin" class="btn btn-primary button_submit">Staff and Admin</a>
-    <a asp-action="FilterByRole" asp-route-role="Member" class="btn btn-primary button_submit">Members</a>
-</div>*@
-
-<br />
-
-<div class="row">
+<div class="row mb-3">
     <div class="col-12 col-md-10 col-lg-5">
         <form class="card card-sm border-0" id="searchForm" action="/ManageUser/Index" method="get" autocomplete="off">
             <div class="card-body row">
@@ -37,7 +29,7 @@
                 </div>
 
                 <div class="col-auto">
-                    <button class="btn btn-lg btn-success" type="submit">
+                    <button class="btn btn-md btn-success" type="submit">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
@@ -49,76 +41,85 @@
 </div>
 
 <!--have horizontal scrolling-->
-<div style="width: 100%; overflow-x: auto;">
+<div style="width: 100%; overflow-x: auto;" class="mb-5">
     <table class="table table-responsive">
-        <thead>
-            <tr class="table-active">
-                <th>
-                    @Html.DisplayNameFor(model => model.First().Email)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().FirstName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().LastName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().PhoneNumber)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().Membership)
-                </th>
+        @if (Model.Count > 0)
+        {
+            <thead>
+                <tr class="table-active">
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().FirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().LastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().PhoneNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().Membership)
+                    </th>
 
-                <th>
-                    @Html.DisplayNameFor(model => model.First().MembershipDuration)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().MembershipExpiry)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LastName)
-                    </td>
-                    <td>
-                        @if (string.IsNullOrEmpty(item.PhoneNumber))
-                        {
-                            <span class="text-muted">Unavailable</span>
-                        }
-                        else
-                        {
-                            @Html.DisplayFor(modelItem => item.PhoneNumber)
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Membership)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MembershipDuration) months
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MembershipExpiry)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info btn-sm button_actions">Edit</a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary btn-sm button_actions">Details</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm button_actions">Delete</a>
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().MembershipDuration)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().MembershipExpiry)
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @if (string.IsNullOrEmpty(item.PhoneNumber))
+                            {
+                                <span class="text-muted">Unavailable</span>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Membership)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MembershipDuration) months
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MembershipExpiry)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info btn-sm button_actions">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary btn-sm button_actions">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm button_actions">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
+        else
+        {
+            <tr class="table-active">
+                <td>Sorry no matching user found!</td>
+            </tr>
+        }
     </table>
 </div>
 
@@ -157,11 +158,10 @@
         for (var i = 0; i < messageObject.length; i++) {
             autoSuggestions +=
                 // + messageObject[i].FirstName + "\" " + messageObject[i].LastName + "\" "
-
+                autoSuggestions +=
                 "<input type=\"button\" value=\"" + messageObject[i].FirstName + "\" "
-                //once suggested was clicked  --> it will change the input search to suggested string
                 + "onclick=\"document.getElementById('searchString').value = this.value; document.getElementById('searchForm').submit();\" "
-                + "style =\"width: 280px\" />";
+                + "/>";
             autoSuggestions += "<br />";
         }
         //place the generated buttons HTML code inside the display div

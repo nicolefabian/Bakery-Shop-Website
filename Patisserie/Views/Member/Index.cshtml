@@ -4,14 +4,15 @@
     ViewData["Title"] = "Index";
 }
 
- @if (User.IsInRole("Administrator") || User.IsInRole("Staff"))
- {
-<p>
-        <a class="btn btn-success btn-primary mb-2" asp-action="Create"><i class="fa-sharp fa-solid fa-circle-plus"></i> Create New Member</a>
-</p>
- }
 
-<h4>View users</h4>
+@if (User.IsInRole("Administrator") || User.IsInRole("Staff"))
+{
+    <h4 class="mb-3">Manage member</h4>
+    <p>
+        <a class="btn btn-success btn-primary mb-2" asp-action="Create"><i class="fa-sharp fa-solid fa-circle-plus"></i> Create New Member</a>
+    </p>
+}
+
 <table class="table table-responsive">
     <thead>
         <tr class="table-active">
@@ -37,32 +38,36 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Membership)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MembershipExpiry)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MembershipDuration)
-            </td>
-            <td>
-                    <a asp-action="Edit" asp-route-id="@item.MemberId" class="btn btn-info btn-sm">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.MemberId" class="btn btn-secondary btn-sm">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.MemberId" class="btn btn-danger btn-sm">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Membership)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MembershipExpiry)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MembershipDuration) months
+                </td>
+                <td>
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Staff"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.MemberId" class="btn btn-info btn-sm">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.MemberId" class="btn btn-secondary btn-sm">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.MemberId" class="btn btn-danger btn-sm">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

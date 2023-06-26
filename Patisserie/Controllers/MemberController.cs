@@ -12,12 +12,12 @@ using Patisserie.Models.DB;
 
 namespace Patisserie.Controllers
 {
-    [Authorize] // all users have access
+    [Authorize] // must have an account to access 
     public class MemberController : Controller
     {
         private readonly FSWD2023fabi18Context _context;
 
-        private readonly UserManager<ApplicationUser> _userManager; 
+        private readonly UserManager<ApplicationUser> _userManager;
 
         //constructor
         public MemberController(FSWD2023fabi18Context context, UserManager<ApplicationUser> userManager)
@@ -26,13 +26,43 @@ namespace Patisserie.Controllers
             _userManager = userManager;
         }
 
+        //found the solution to get currently logged in using this: https://stackoverflow.com/questions/38751616/asp-net-core-identity-get-current-user
+
         // GET: Member
         public async Task<IActionResult> Index()
         {
-              return _context.Members != null ? 
-                          View(await _context.Members.ToListAsync()) :
-                          Problem("Entity set 'FSWD2023fabi18Context.Members'  is null.");
+            if (User.IsInRole("Administrator") || (User.IsInRole("Staff")))
+            {
+                return _context.Members != null ?
+                                View(await _context.Members.ToListAsync()) :
+                                Problem("Entity set 'FSWD2023fabi18Context.Members'  is null.");
+            }
+            else if (User.Identity.IsAuthenticated)
+            {
+                // Get the currently logged-in user
+                var user = await _userManager.GetUserAsync(User);
+                string userEmail = user.Email;
+
+                if (user != null)
+                {
+                    // Retrieve the member record for the logged-in user
+                    var member = await _context.Members.FirstOrDefaultAsync(m => m.Email == userEmail);
+
+                    if (member != null)
+                    {
+                        // Return the member record to the view
+                        return View(new List<Member> { member });
+                    }
+                }
+                // If user or member is not found
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return View();
+            }
         }
+
 
         // GET: Member/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -157,14 +187,14 @@ namespace Patisserie.Controllers
             {
                 _context.Members.Remove(member);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MemberExists(int id)
         {
-          return (_context.Members?.Any(e => e.MemberId == id)).GetValueOrDefault();
+            return (_context.Members?.Any(e => e.MemberId == id)).GetValueOrDefault();
         }
     }
 }

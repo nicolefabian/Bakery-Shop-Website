@@ -4,11 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h4>Manage category</h4>
-<br />
-<p>
-    <a class="btn btn-success btn-primary mb-2" asp-action="Create"><i class="fa-sharp fa-solid fa-circle-plus"></i> Create New Category</a>
-</p>
+ @if (User.IsInRole("Administrator") || User.IsInRole("Staff"))
+{
+    <h4 class="mb-3">Manage category</h4>
+    <p>
+        <a class="btn btn-success btn-primary mb-2" asp-action="Create"><i class="fa-sharp fa-solid fa-circle-plus"></i> Create New Category</a>
+    </p>
+}
+
 <table class="table table-responsive">
     <thead>
         <tr class="table-active">

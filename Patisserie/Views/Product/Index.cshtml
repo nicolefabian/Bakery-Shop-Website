@@ -5,21 +5,18 @@
 @{
     ViewData["Title"] = "Index";
 }
-<head>
-    @*using fontawesome kit for icons styling*@
-    <script src="https://kit.fontawesome.com/1269185472.js" crossorigin="anonymous"></script>
-</head>
-<h3>Home</h3>
+
 @if(User.IsInRole("Administrator")  || User.IsInRole("Staff"))
 {
     <br />
     <p class="align-items-center">
-        <a asp-action="Create" class="btn btn-success btn-sm"> <i class="fa-sharp fa-solid fa-circle-plus"></i> Add product</a>
+        <a asp-action="Create" class="btn btn-success btn-md"> <i class="fa-sharp fa-solid fa-circle-plus"></i> Add product</a>
     </p>
 
 }
 
-<div class="row justify-content-center">
+<!--SEARCH BAR-->
+<div class="row justify-content-center mb-5">
     <div class="col-12 col-md-10 col-lg-5">
         <form class="card card-sm border-0" id="searchForm" action="/Product/Index" method="get" autocomplete="off">
             <div class="card-body row">
@@ -37,26 +34,25 @@
                 </div>
             </div>
         </form>
-
         <div id="autoSuggestContainer" class="autoSuggest" style="border: none;"></div>
     </div>
 </div>
 
-
-<div class="row row-cols-1 row-cols-md-3 g-4">
+<!--PRODUCT CARD-->
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
     @foreach (var item in Model)
     {
         <div class="col">
-            <div class="card h-100">
+            <div class="card h-100 card-format">
                 <a asp-action="Details" asp-route-id="@item.ProductId">
                     <img src="@Url.Content("~/uploads/" + item.Image)" alt="Product Image" class="card-img-top">
                 </a>
                 <div class="card-body">
-                    <a asp-action="Details" asp-route-id="@item.ProductId">
-                        <h5 class="card-title no-link-style">@Html.DisplayFor(modelItem => item.Name)</h5>
-                        <h6 class="card-subtitle no-link-style">@Html.DisplayFor(modelItem => item.Category.Name)</h6>
+                    <a asp-action="Details" asp-route-id="@item.ProductId" class="no-link-style">
+                        <h5 class="card-title text-center mb-4">@Html.DisplayFor(modelItem => item.Name)</h5>
+                        <h6 class="card-subtitle mb-3">@Html.DisplayFor(modelItem => item.Category.Name)</h6>
                     </a>
-                    <p class="card-text">@Html.Raw(item.Description)</p>
+                    <p class="card-text mb-1">@Html.Raw(item.Description)</p>
                 </div>
                 <div class="card-footer d-flex justify-content-between align-items-center">
                     <h6 class="card-title">$@Html.DisplayFor(modelItem => item.Price) <span class="currency">NZD</span></h6>
@@ -67,53 +63,7 @@
     }
 </div>
 
-
-
-@*<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Category)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>*@
-
-
-@*code for display number of pages *@
+@*display number of pages *@
 @Html.PagedListPager(Model, page => Url.Action("Index",
         new { Page = page }),
         new PagedListRenderOptions
@@ -122,9 +72,7 @@
             PageClasses = new string[] { "page-link" }
     })
 
-
-
-@*Javascript for the auto suggestion*@
+@*auto suggestion*@
 <script type="text/javascript">
     function XAjaxRequest(searchString) {
         if (searchString.length < 1) {

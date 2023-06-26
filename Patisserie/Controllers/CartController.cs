@@ -172,18 +172,12 @@ namespace Patisserie.Controllers
             var cartItem = cartItems.FirstOrDefault(item => item.ProductId == productId);
             if (cartItem != null)
             {
-                if (cartItem.Quantity > 1)
-                {
-                    cartItem.Quantity--;
-                }
-                else
-                {
-                    cartItems.Remove(cartItem);
-                }
+                cartItems.Remove(cartItem); // Remove the cart item from the list
             }
             SaveCartItems(cartItems);
             return RedirectToAction("Index");
         }
+
 
         public IActionResult ClearCart()
         {
