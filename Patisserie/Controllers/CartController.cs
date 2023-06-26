@@ -50,7 +50,7 @@ namespace Patisserie.Controllers
                         totalPrice += totalPriceForItem; // Add the item's total price to the overall total price
                     }
 
-                    //Your membership expiry is {membershipExpiry.Date.ToString("yyyy-MM-dd")}"
+                    SaveCartItems(cartItems);
                     // Set the ViewBag message, discounted total price, and item prices
                     ViewBag.MembershipMessage = $"You are a {membershipType} member. You have a {discountPercentage:P0} discount";
                     ViewBag.DiscountedTotal = totalPrice.ToString("N2");
@@ -59,6 +59,18 @@ namespace Patisserie.Controllers
 
             return View(cartItems);
         }
+
+        private List<CartItem> GetCartItems()
+        {
+            var cartItems = HttpContext.Session.Get<List<CartItem>>("CartItems");
+            if (cartItems == null)
+            {
+                cartItems = new List<CartItem>();
+            }
+
+            return cartItems;
+        }
+
 
         private decimal GetDiscountPercentage(string membershipLevel, DateTime membershipExpiry)
         {
@@ -83,6 +95,7 @@ namespace Patisserie.Controllers
 
             return discountPercentage;
         }
+
 
         public IActionResult AddToCart(int id)
         {
@@ -184,16 +197,9 @@ namespace Patisserie.Controllers
             SaveCartItems(new List<CartItem>());
             return RedirectToAction("Index");
         }
+    
 
-        private List<CartItem> GetCartItems()
-        {
-            var cartItems = HttpContext.Session.Get<List<CartItem>>("CartItems");
-            if (cartItems == null)
-            {
-                cartItems = new List<CartItem>();
-            }
-            return cartItems;
-        }
     }
 }
+
 

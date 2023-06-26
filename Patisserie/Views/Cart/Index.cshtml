@@ -6,7 +6,7 @@
     // Required. Replace SB_CLIENT_ID with your sandbox client ID.
 </script>
 
-
+<!--CART INDEX-->
 
 <!--free card layout found here: https://mdbootstrap.com/docs/standard/extended/shopping-carts/ and was modified to fit requirements-->
 <section class="h-100 h-custom" style="background-color: #eee;">
@@ -28,156 +28,99 @@
                                     <div class="d-flex justify-content-between align-items-center mb-5">
                                         <h4 class="fw-bold mb-0 text-black">Shopping Cart</h4>
                                         <a href="@Url.Action("ClearCart", "Cart")" class="text-muted link-unstyled">Clear Cart</a>
-
                                     </div>
                                     <hr class="my-4">
-                                    <!-------------------------------------------------------->
-                                    <div class="row mb-4 d-flex justify-content-between align-items-center">
-
-                                        <!-- Cart items -->
-                                        @if (Model.Count == 0)
-                                        {
+                                    <!-- Cart items -->
+                                    @if (Model.Count == 0)
+                                    {
+                                        <div class="row mb-4 d-flex justify-content-between align-items-center">
                                             <div class="col-12">
                                                 <p>Your shopping cart is empty.</p>
                                             </div>
-                                        }
-                                        else
-                                        {
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="row mb-4 d-flex justify-content-between align-items-center">
                                             @foreach (var item in Model)
                                             {
-                                                <!--image-->
+                                                <!-- image -->
                                                 <div class="col-md-2 col-lg-2 col-xl-2">
                                                     <img src="@Url.Content("~/uploads/" + item.Product.Image)" class="img-fluid rounded-3" alt="Product Image" />
                                                 </div>
-
-                                                <!--product name-->
+                                                <!-- product name -->
                                                 <div class="col-md-3 col-lg-3 col-xl-3">
                                                     <p>@item.Product.Name</p>
                                                 </div>
-
-                                                <!--price-->
+                                                <!-- price -->
                                                 <div class="col-md-3 col-lg-3 col-xl-3">
                                                     <p>@item.Product.Price.ToString("c", CultureInfo.CurrentCulture)</p>
                                                 </div>
-
-
-                                                <!--quantity-->
+                                                <!-- quantity -->
                                                 <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                                                     <!-- Decrease Quantity button -->
                                                     <button class="btn btn-outline-primary btn-sm">
                                                         <a asp-controller="Cart" asp-route-id="@item.Product.ProductId" asp-action="DecreaseQuantity" class="no-link-style">-</a>
                                                     </button>
-
                                                     <span class="button_actions m-2">@item.Quantity</span>
-                                                    
                                                     <!-- Increase Quantity button -->
                                                     <button class="btn btn-outline-primary btn-sm">
                                                         <a asp-controller="Cart" asp-route-id="@item.Product.ProductId" asp-action="IncreaseQuantity" class="no-link-style">+</a>
                                                     </button>
                                                 </div>
-
-                                                <!--delete-->
+                                                <!-- delete -->
                                                 <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-
-                                                    <a asp-controller="Cart" asp-route-id="@item.ProductId" asp-action="RemoveFromCart" class="text-muted"> <i class="fas fa-trash-alt"></i></a>
+                                                    <a asp-controller="Cart" asp-route-id="@item.ProductId" asp-action="RemoveFromCart" class="text-muted">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </a>
                                                 </div>
-
                                                 <hr class="my-4">
                                             }
-                                        }
-                                    </div>
+                                        </div>
+                                    }
                                 </div>
                             </div>
-                            <div class="col-lg-4 bg-primary rounded">
-                                <div class="p-5">
-                                    <div class="col-lg-12">
-                                        <h4 class="fw-bold text-white mb-4 mt-2 pt-1">Summary</h4>
-                                        <hr class="my-3 text-white">
 
-                                        <div class="card rounded-3 mb-4 h-100">
-                                            <div class="card-body p-4 h-100">
-
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="alert alert-dismissible alert-light" id="success-message">
-                                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                                            <strong>@ViewBag.MembershipMessage</strong>
+                            @if (Model.Count > 0)
+                            {
+                                <div class="col-lg-4 bg-primary rounded">
+                                    <div class="p-5">
+                                        <div class="col-lg-12">
+                                            <h4 class="fw-bold text-white mb-4 mt-2 pt-1">Summary</h4>
+                                            <hr class="my-3 text-white">
+                                          
+                                            <div class="card rounded-3 mb-4 h-100">
+                                                <div class="card-body p-4 h-100">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="alert alert-light" id="success-message">
+                                                                <strong>@ViewBag.MembershipMessage</strong>
+                                                            </div>
+                                                            <input id="GrandTotal" type="hidden" value="@ViewBag.DiscountedTotal" />
                                                         </div>
-                                                        <input id="GrandTotal" type="hidden" value="@ViewBag.DiscountedTotal" />
                                                     </div>
-                                                </div>
-                                                <div class="row d-flex justify-content-between align-items-center mb-4">
-                                                    <div class="col">
-                                                        <h6 class="mb-0">Total</h6>
+                                                    <div class="row d-flex justify-content-between align-items-center mb-4">
+                                                        <div class="col">
+                                                            <h6 class="mb-0">Total</h6>
+                                                        </div>
+                                                        <div class="col">
+                                                            <h6 class="mb-0 text-end">$@ViewBag.DiscountedTotal <span class="currency">nzd</span></h6>
+                                                            <input id="GrandTotal" type="hidden" value="@ViewBag.DiscountedTotal" />
+                                                        </div>                                              
                                                     </div>
-
-                                                    <div class="col">
-                                                        <h6 class="mb-0 text-end">$@ViewBag.DiscountedTotal <span class="currency">nzd</span></h6>
-                                                        <input id="GrandTotal" type="hidden" value="@ViewBag.DiscountedTotal" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="row justify-content-center">
-                                                    <div class="col text-center">
-                                                        <div id="paypal-button-container"></div>
+                                                    <div class="row d-flexjustify-content-between align-items-center ">
+                                                    <a asp-action="CheckOut" asp-controller="Order" class="btn btn-primary btn-sm button_actions">Checkout</a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </section>
-
-
-<script>
-    paypal.Buttons({
-        createOrder: function (data, actions) {
-            // This function sets up the details of the transaction,
-            // including the amount and line item details.
-
-            var grandTotal = '@ViewBag.DiscountedTotal';
-
-            return actions.order.create({
-                purchase_units: [{
-                    amount: {
-                        value: grandTotal
-                    }
-                }]
-            });
-        },
-        onApprove: function (data, actions) {
-            // This function captures the funds from the transaction.
-            return actions.order.capture().then(function (details) {
-                // This function shows a transaction success message to your buyer.
-                // When ready to go live, remove the alert and show a success message within this page. For example:
-                const successMessage = document.getElementById('success-message');
-                successMessage.style.display = 'block';
-                successMessage.innerHTML = '<strong>@ViewBag.MembershipMessage</strong>';
-                // Hide the PayPal button
-                const paypalButton = document.getElementById('paypal-button-container');
-                paypalButton.style.display = 'none';
-            });
-        }
-
-    }).render('#paypal-button-container');
-</script>
-
-
-@*
-<script>
-    function updateQuantity(productId, change) {
-        var quantityElement = document.getElementById("quantity-" + productId);
-        var quantity = parseInt(quantityElement.innerText);
-        quantity += change;
-        if (quantity < 1) {
-            quantity = 1;
-        }
-        quantityElement.innerText = quantity;
-    }
-</script>*@

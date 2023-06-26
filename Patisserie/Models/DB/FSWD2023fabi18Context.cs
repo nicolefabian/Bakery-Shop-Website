@@ -212,17 +212,21 @@ namespace Patisserie.Models.DB
 
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
-                entity.Property(e => e.CustomerId)
-                    .HasMaxLength(50)
-                    .HasColumnName("CustomerID");
-
                 entity.Property(e => e.Email).HasMaxLength(50);
 
                 entity.Property(e => e.FirstName).HasMaxLength(50);
 
                 entity.Property(e => e.LastName).HasMaxLength(50);
 
-                entity.Property(e => e.Total).HasColumnType("money");
+                entity.Property(e => e.MemberId).HasColumnName("MemberID");
+
+                entity.Property(e => e.Total).HasColumnType("decimal(18, 0)");
+
+                entity.HasOne(d => d.Member)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.MemberId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Order_Member");
             });
 
             modelBuilder.Entity<OrderDetail>(entity =>
@@ -232,6 +236,8 @@ namespace Patisserie.Models.DB
                 entity.Property(e => e.OrderDetailId).HasColumnName("OrderDetailID");
 
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
+
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
