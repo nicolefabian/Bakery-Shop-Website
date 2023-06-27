@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Patisserie.Models.DB;
+using System.Data;
 
 namespace Patisserie.Controllers
 {
+    [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
     public class OrderReportController : Controller
     {
         private readonly FSWD2023fabi18Context _context;

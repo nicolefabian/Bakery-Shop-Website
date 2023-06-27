@@ -93,16 +93,7 @@ namespace Patisserie.Controllers
             return View(product);
         }
 
-        public ActionResult GetSpecialProducts()
-        {
-            // Logic to retrieve products with the "special" category
-            var specialProducts = _context.Products.Where(p => p.Name == "Special").ToList();
-
-            return View(specialProducts);
-        }
-
-
-
+        [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
         // GET: Product/Create
         public IActionResult Create()
         {
@@ -111,6 +102,7 @@ namespace Patisserie.Controllers
         }
 
 
+        [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
         // POST: Product/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -140,6 +132,7 @@ namespace Patisserie.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
         // GET: Product/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -157,6 +150,7 @@ namespace Patisserie.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
         // POST: Product/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -205,6 +199,7 @@ namespace Patisserie.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
         // GET: Product/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -224,6 +219,7 @@ namespace Patisserie.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
         // POST: Product/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
