@@ -15,9 +15,9 @@ namespace Patisserie.Models.DB
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public decimal Total { get; set; }
-        public int MemberId { get; set; }
+        public int? MemberId { get; set; }
 
-        public virtual Member Member { get; set; } = null!;
+        public virtual Member? Member { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

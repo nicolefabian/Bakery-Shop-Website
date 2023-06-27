@@ -71,3 +71,12 @@
         }
     </tbody>
 </table>
+
+<!--alert message for membership expiry-->
+@if (!string.IsNullOrEmpty(ViewBag.MembershipExpiry))
+{
+    <div class="alert alert-dismissible alert-info mt-5">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Heads up!</strong> @ViewBag.MembershipExpiry
+    </div>
+}

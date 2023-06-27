@@ -137,7 +137,7 @@ namespace Patisserie.Controllers
         {
             decimal discountPercentage = 0.0m;
 
-            // Check if the membership is still valid
+            // Check if the membership is still valid, otherwise no discount
             if (membershipExpiry > DateTime.Now.Date)
             {
                 if (membershipLevel == "Gold")

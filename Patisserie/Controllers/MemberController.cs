@@ -31,30 +31,35 @@ namespace Patisserie.Controllers
         // GET: Member
         public async Task<IActionResult> Index()
         {
-            if (User.IsInRole("Administrator") || (User.IsInRole("Staff")))
+            if (User.IsInRole("Administrator") || User.IsInRole("Staff"))
             {
-                return _context.Members != null ?
-                                View(await _context.Members.ToListAsync()) :
-                                Problem("Entity set 'FSWD2023fabi18Context.Members'  is null.");
+                return _context.Members != null
+                    ? View(await _context.Members.ToListAsync())
+                    : Problem("Entity set 'FSWD2023fabi18Context.Members' is null.");
             }
             else if (User.Identity.IsAuthenticated)
             {
-                // Get the currently logged-in user
+                // get the currently logged-in user
                 var user = await _userManager.GetUserAsync(User);
                 string userEmail = user.Email;
 
                 if (user != null)
                 {
-                    // Retrieve the member record for the logged-in user
+                    // retrieve member record based on currently logged in user
                     var member = await _context.Members.FirstOrDefaultAsync(m => m.Email == userEmail);
 
                     if (member != null)
                     {
-                        // Return the member record to the view
+                        // check if the membership expired
+                        if (member.MembershipExpiry < DateTime.Now)
+                        {
+                            ViewBag.MembershipExpiry = "Your membership has expired. You will no longer receive discount perks. Please contact us to renew!";
+                        }
+                        // return the member record to view
                         return View(new List<Member> { member });
                     }
                 }
-                // If user or member is not found
+               
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -62,6 +67,7 @@ namespace Patisserie.Controllers
                 return View();
             }
         }
+
 
 
         // GET: Member/Details/5

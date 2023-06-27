@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Patisserie.Models.DB
 {
@@ -22,16 +24,25 @@ namespace Patisserie.Models.DB
         public string? PasswordHash { get; set; }
         public string? SecurityStamp { get; set; }
         public string? ConcurrencyStamp { get; set; }
+        [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Invalid phone number format.")]
         public string? PhoneNumber { get; set; }
         public bool PhoneNumberConfirmed { get; set; }
         public bool TwoFactorEnabled { get; set; }
         public DateTimeOffset? LockoutEnd { get; set; }
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
+
+        [DisplayName("First name")]
         public string? FirstName { get; set; }
+        [DisplayName("Last name")]
         public string? LastName { get; set; }
         public string? Membership { get; set; }
+        [DisplayName("Membership duration")]
+
         public int MembershipDuration { get; set; }
+        [DisplayName("Membership expiry")]
+        //only display the date
+        [DataType(DataType.Date)]
         public DateTime MembershipExpiry { get; set; }
 
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
