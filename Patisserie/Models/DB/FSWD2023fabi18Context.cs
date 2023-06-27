@@ -32,16 +32,15 @@ namespace Patisserie.Models.DB
         public virtual DbSet<Product> Products { get; set; } = null!;
         //customised 
         public virtual DbSet<OrderReport> OrderReports { get; set; } = null!;
-
-        //commented
-        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=citizen.manukautech.info,6304;Database=FSWD2023fabi18;UID=FSWDS2-Group1;PWD=fBit$28601;encrypt=true;trustservercertificate=true");
-            }
-        }*/
+        /*
+                protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+                {
+                    if (!optionsBuilder.IsConfigured)
+                    {
+        #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                        optionsBuilder.UseSqlServer("Server=citizen.manukautech.info,6304;Database=FSWD2023fabi18;UID=FSWDS2-Group1;PWD=fBit$28601;encrypt=true;trustservercertificate=true");
+                    }
+                }*/
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -144,10 +143,6 @@ namespace Patisserie.Models.DB
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
-                entity.Property(e => e.ShoppingId)
-                    .HasMaxLength(50)
-                    .HasColumnName("ShoppingID");
-
                 entity.Property(e => e.TotalAmount).HasColumnType("money");
 
                 entity.HasOne(d => d.Product)
@@ -165,10 +160,6 @@ namespace Patisserie.Models.DB
                 entity.Property(e => e.CartId).HasColumnName("CartID");
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
-
-                entity.Property(e => e.ShoppingId)
-                    .HasMaxLength(50)
-                    .HasColumnName("ShoppingID");
 
                 entity.Property(e => e.TotalAmount).HasColumnType("money");
 
