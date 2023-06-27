@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,6 +15,7 @@ using X.PagedList;
 
 namespace Patisserie.Controllers
 {
+    [Authorize(Roles = "Administrator")] //allow administrators only
     public class ManageUserController : Controller
     {
         private readonly FSWD2023fabi18Context _context;
@@ -33,7 +36,8 @@ namespace Patisserie.Controllers
             var users = from e in _context.AspNetUsers select e;
             if (!String.IsNullOrEmpty(searchString))
             {
-                users = users.Where(s => s.LastName.Contains(searchString) || s.FirstName.Contains(searchString));
+                //gets the first name  
+                users = users.Where(s => s.FirstName.Contains(searchString));
             }
 
             return View(users.ToPagedList(pageNumber, 5));
@@ -50,14 +54,6 @@ namespace Patisserie.Controllers
             string json = JsonConvert.SerializeObject(queryUsers);
             return json;
         }
-
-        /*// GET: ManageUser
-        public async Task<IActionResult> Index()
-        {
-              return _context.AspNetUsers != null ? 
-                          View(await _context.AspNetUsers.ToListAsync()) :
-                          Problem("Entity set 'FSWD2023fabi18Context.AspNetUsers'  is null.");
-        }*/
 
         // GET: ManageUser/Details/5
         public async Task<IActionResult> Details(string id)

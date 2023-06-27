@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Patisserie.Controllers
 {
-    //[Authorize(Roles = "Administrator")]
 
-    //allow anyone
+    //allow anyone to view the about us page
     [AllowAnonymous]
     public class AboutPatisserieController : Controller
     {

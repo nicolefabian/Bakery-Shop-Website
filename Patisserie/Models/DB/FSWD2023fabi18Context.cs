@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Patisserie.ViewModels;
 
 namespace Patisserie.Models.DB
 {
@@ -30,14 +31,17 @@ namespace Patisserie.Models.DB
         public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
         public virtual DbSet<Product> Products { get; set; } = null!;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
+        //customised 
+        public virtual DbSet<OrderReport> OrderReports { get; set; } = null!;
+
+        /*    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=citizen.manukautech.info,6304;Database=FSWD2023fabi18;UID=FSWDS2-Group1;PWD=fBit$28601;encrypt=true;trustservercertificate=true");
-            }
-        }
+                if (!optionsBuilder.IsConfigured)
+                {
+    #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                    optionsBuilder.UseSqlServer("Server=citizen.manukautech.info,6304;Database=FSWD2023fabi18;UID=FSWDS2-Group1;PWD=fBit$28601;encrypt=true;trustservercertificate=true");
+                }
+            }*/
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -237,7 +241,7 @@ namespace Patisserie.Models.DB
 
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
-                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.Price).HasColumnType("money");
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
@@ -252,7 +256,6 @@ namespace Patisserie.Models.DB
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OrderDetail_Product");
             });
 

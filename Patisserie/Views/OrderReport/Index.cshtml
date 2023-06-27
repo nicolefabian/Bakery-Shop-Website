@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Patisserie.ViewModels.OrderReport>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    /*to make it the column fit*/
+    th, td {
+        white-space: nowrap;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<h3>Order Report</h3>
+<br />
+
+<div ng-app="MyApp" ng-controller="MyCtrl">
+    <!--have horizontal scrolling-->
+    <div style="width: 100%; overflow-x: auto;">
+        <table class="table table-responsive">
+            <thead>
+                <tr class="table-active">
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Email</th>
+                    <th>Total</th>
+                    <th>Order ID</th>
+                    <th>Product ID</th>
+                    <th>Each product price</th>
+                    <th>Membership</th>
+                    <th>Membership expiry</th>
+                    <th>Membership duration</th>
+                    <th>Expiry</th>
+                </tr>
+            </thead>
+
+            <tr ng-repeat="item in Data">
+                <td>{{item.FirstName}}</td>
+                <td>{{item.LastName}}</td>  
+                <td>{{item.Email}}</td>
+                <td>$ {{item.Total}}</td>
+                <td>{{item.OrderId}}</td>
+                <td>{{item.ProductId}}</td>
+                <td>{{item.Price}}</td>
+                <td>{{item.Membership}}</td>
+                <td>{{item.MembershipExpiry | date:'yyyy-MM-dd'}}</td>
+                <td>{{item.MembershipDuration}}</td>
+                <td>{{Expiry(item.MembershipExpiry)}} days remaining</td>
+            </tr>
+            <tfoot>
+                <tr>
+                    <td colspan="11"  ng-if="Data.length === 0">No records found.</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<script>
+    var app = angular.module('MyApp', []);
+    app.controller('MyCtrl', function ($scope) {
+        $scope.Data = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+        $scope.Expiry = function (expiryDate) {
+            const currentDate = new Date();
+            const expiry = new Date(expiryDate);
+            const timeDiff = expiry.getTime() - currentDate.getTime();
+            //calculation based on this: https://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript
+            const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            return diffDays;
+        };
+    });
+</script>

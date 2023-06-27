@@ -66,14 +66,19 @@ body {
     margin-right: 8px;
 }
 
+.button_actions2 {
+    margin-left:10px;
+}
+
 .form-group {
     margin-top: 20px;
 }
 
 .card-img-top {
-    height:100%;
+    height: 100%;
     width: 100%;
     object-fit: cover;
+    max-height: 200px;
 }
 
 .no-link-style {

@@ -39,10 +39,10 @@
 </div>
 
 <!--PRODUCT CARD-->
-<div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+<div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var item in Model)
     {
-        <div class="col">
+        <div class="col mb-4">
             <div class="card h-100 card-format">
                 <a asp-action="Details" asp-route-id="@item.ProductId">
                     <img src="@Url.Content("~/uploads/" + item.Image)" alt="Product Image" class="card-img-top">
@@ -61,8 +61,7 @@
             </div>
         </div>
     }
-</div>
-
+</div><br />
 @*display number of pages *@
 @Html.PagedListPager(Model, page => Url.Action("Index",
         new { Page = page }),

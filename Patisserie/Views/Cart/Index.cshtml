@@ -59,15 +59,16 @@
                                                 <!-- quantity -->
                                                 <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                                                     <!-- Decrease Quantity button -->
-                                                    <button class="btn btn-outline-primary btn-sm">
-                                                        <a asp-controller="Cart" asp-route-id="@item.Product.ProductId" asp-action="DecreaseQuantity" class="no-link-style">-</a>
-                                                    </button>
-                                                    <span class="button_actions m-2">@item.Quantity</span>
+                                                    <button class="btn btn-outline-primary btn-sm button_actions">
+                                                    <a asp-controller="Cart" asp-route-id="@item.Product.ProductId" asp-action="DecreaseQuantity" class="mr-2 no-link-style">-</a>
+                                                   </button>
+                                                    <p class="button_actions m-0">@item.Quantity</p>
                                                     <!-- Increase Quantity button -->
-                                                    <button class="btn btn-outline-primary btn-sm">
-                                                        <a asp-controller="Cart" asp-route-id="@item.Product.ProductId" asp-action="IncreaseQuantity" class="no-link-style">+</a>
+                                                    <button class="btn btn-outline-primary btn-sm button_actions2">
+                                                        <a asp-controller="Cart" asp-route-id="@item.Product.ProductId" asp-action="IncreaseQuantity" class="mr-2 no-link-style">+</a>
                                                     </button>
                                                 </div>
+
                                                 <!-- delete -->
                                                 <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                                                     <a asp-controller="Cart" asp-route-id="@item.ProductId" asp-action="RemoveFromCart" class="text-muted">

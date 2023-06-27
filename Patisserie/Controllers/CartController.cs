@@ -43,15 +43,13 @@ namespace Patisserie.Controllers
                     foreach (var item in cartItems)
                     {
                         decimal itemPrice = item.Product.Price; // Get the price of the product
-                     //   decimal discountedPrice = itemPrice - (itemPrice * discountPercentage); // Calculate the discounted price
-                        decimal totalPriceForItem = itemPrice * item.Quantity; // Calculate the total price for the item (discounted price * quantity)
+                        decimal totalPriceForItem = itemPrice * item.Quantity;
                         item.TotalAmount = totalPriceForItem; // Update the total amount for the item
 
-                        totalPrice += totalPriceForItem; // Add the item's total price to the overall total price
+                        totalPrice += totalPriceForItem;
                     }
 
                     SaveCartItems(cartItems);
-                    // Set the ViewBag message, discounted total price, and item prices
                     ViewBag.Message = "Discounts will apply upon proceeding to checkout";
                     ViewBag.Total = totalPrice.ToString("N2");
                 }
@@ -176,7 +174,7 @@ namespace Patisserie.Controllers
 
         private void SaveCartItems(List<CartItem> cartItems)
         {
-            HttpContext.Session.Set("CartItems", cartItems); // Update your cart in the session
+            HttpContext.Session.Set("CartItems", cartItems); // Update cart in the session
         }
 
         public IActionResult RemoveFromCart(int productId)

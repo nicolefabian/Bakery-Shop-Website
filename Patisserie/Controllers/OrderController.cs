@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +12,7 @@ using Patisserie.Models.DB;
 
 namespace Patisserie.Controllers
 {
+    [Authorize] //all users with existing account
     public class OrderController : Controller
     {
         private readonly FSWD2023fabi18Context _context;
@@ -42,30 +44,47 @@ namespace Patisserie.Controllers
 
                     if (cartItems != null && cartItems.Any())
                     {
-                        // Create a new order
+                        // Create a new order object to be saved in the database
                         var order = new Order
                         {
-                            Email = userEmail, // Set the customer's email
-                            FirstName = user.FirstName, // Set the customer's first name
-                            LastName = user.LastName, // Set the customer's last name
+                            Email = userEmail,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
                             Total = CalculateTotal(cartItems),
-                            MemberId = member.MemberId // Set the member ID
+                            MemberId = member.MemberId
                         };
 
-                        ViewBag.DiscountedTotal = CalculateTotal(cartItems).ToString("N2"); ;
+                        ViewBag.DiscountedTotal = CalculateTotal(cartItems).ToString("N2");
 
-                   /*     // Save the order to the database
+                        // Save the order to the database
                         _context.Orders.Add(order);
-                        _context.SaveChanges();*/
+                        _context.SaveChanges();
 
+ 
+                        // Create and save order details
+                        foreach (var item in cartItems)
+                        {
+                            var orderDetail = new OrderDetail
+                            {
+                                TotalAmount = item.Quantity * item.Product.Price,
+                                OrderId = order.OrderId,
+                                ProductId = item.Product.ProductId,
+                                Price = item.Product.Price,                              
+                            };
+
+                            // Save the order detail to the database
+                            _context.OrderDetails.Add(orderDetail);
+                            _context.SaveChanges();
+                        }
                         return View(cartItems);
                     }
                 }
             }
-
-            return View(); // Handle the case when the member is not found or there is no logged-in user
+            return View();
         }
 
+
+        //calculating the total amount
         private decimal CalculateTotal(List<CartItem> cartItems)
         {
             decimal total = 0;
@@ -80,7 +99,7 @@ namespace Patisserie.Controllers
 
         private void SaveCartItems(List<CartItem> cartItems)
         {
-            HttpContext.Session.Set("CartItems", cartItems); // Update your cart in the session
+            HttpContext.Session.Set("CartItems", cartItems); 
         }
 
         public IActionResult ClearCart()
@@ -98,9 +117,9 @@ namespace Patisserie.Controllers
                 return View();
             }
 
-           
             SaveCartItems(new List<CartItem>());
-            ViewBag.UserDetails = "Order Successful! Thank you " + user.FirstName + " " + user.LastName + "for your payment";
+            //adding a message for the user after successful payment
+            ViewBag.UserDetails = "Order Successful! Thank you " + user.FirstName + " " + user.LastName + " " + "for your payment";
             return View("CheckOut");
         }
 
@@ -138,14 +157,6 @@ namespace Patisserie.Controllers
             return discountPercentage;
         }
 
-        /*   // GET: Order
-           public async Task<IActionResult> Index()
-           {
-               return _context.Orders != null ?
-                           View(await _context.Orders.ToListAsync()) :
-                           Problem("Entity set 'FSWD2023fabi18Context.Orders'  is null.");
-           }*/
-
         public async Task<IActionResult> Index()
         {
             var cartItems = HttpContext.Session.Get<List<CartItem>>("CartItems");
@@ -155,7 +166,6 @@ namespace Patisserie.Controllers
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user != null)
                 {
-                    // Get the user's membership level
                     var membershipType = user.Membership;
                     var membershipExpiry = user.MembershipExpiry.Date;
                     decimal discountPercentage = GetDiscountPercentage(membershipType, membershipExpiry);
@@ -164,7 +174,7 @@ namespace Patisserie.Controllers
                     decimal totalPrice = 0;
                     foreach (var item in cartItems)
                     {
-                        decimal itemPrice = item.Product.Price; // Get the price of the product
+                        decimal itemPrice = item.Product.Price;
                         decimal discountedPrice = itemPrice - (itemPrice * discountPercentage); // Calculate the discounted price
                         decimal totalPriceForItem = discountedPrice * item.Quantity; // Calculate the total price for the item (discounted price * quantity)
                         item.TotalAmount = totalPriceForItem; // Update the total amount for the item
@@ -191,6 +201,14 @@ namespace Patisserie.Controllers
             }
             SaveCartItems(cartItems);
             return RedirectToAction("Index");
+        }
+
+        // GET: Order
+        public async Task<IActionResult> ViewOrders()
+        {
+            return _context.Orders != null ?
+                        View(await _context.Orders.ToListAsync()) :
+                        Problem("Entity set 'FSWD2023fabi18Context.Orders'  is null.");
         }
 
 

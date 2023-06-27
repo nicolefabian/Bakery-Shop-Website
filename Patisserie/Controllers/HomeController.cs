@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Patisserie.Models;
@@ -8,6 +9,7 @@ using X.PagedList;
 
 namespace Patisserie.Controllers
 {
+    [AllowAnonymous] //allow anyone to view homepage
     public class HomeController : Controller
     {
         private readonly FSWD2023fabi18Context _context;
@@ -22,13 +24,7 @@ namespace Patisserie.Controllers
         {
             return View();
         }
-    
-      /*  public ActionResult GetSpecialProducts()
-        {
-            var specialProducts = _context.Products.Where(p => p.Name == "Special").ToList();
 
-            return View(specialProducts);
-        }*/
 
         public IActionResult Privacy()
         {

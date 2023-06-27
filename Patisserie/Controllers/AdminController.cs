@@ -55,7 +55,6 @@ namespace Patisserie.Controllers
         }
 
         [HttpPost]
-
         public async Task<IActionResult> EditRole(IdentityRole model)
         {
             var role = await _roleManager.FindByIdAsync(model.Id);

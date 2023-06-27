@@ -36,40 +36,6 @@
     </div>
 </div>
 
-@*<div class="card">
-    <div class="card-body">
-        <h3 class="card-title">Details</h3>
-        <hr />
-
-        <div class="row">
-            <div class="col-sm-4">
-                <img src="@Url.Content("~/uploads/" + Model.Image)" alt="Product Image" class="image-display" />
-            </div>
-            <div class="col-sm-8">
-                <dl class="row">
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.Name)
-                    </dd>
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.Description)
-                    </dd>
-                    <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.Price)
-                    </dt>
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.Price)
-                    </dd>
-                    <dt class="col-sm-3">
-                        @Html.DisplayNameFor(model => model.Category)
-                    </dt>
-                    <dd class="col-sm-9">
-                        @Html.DisplayFor(model => model.Category.Name)
-                    </dd>
-                </dl>
-            </div>
-        </div>
-    </div>
-</div>*@
 
 @if (User.IsInRole("Administrator") || User.IsInRole("Staff"))
 {

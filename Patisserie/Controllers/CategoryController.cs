@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Patisserie.Models.DB;
 
 namespace Patisserie.Controllers
 {
+    [Authorize(Roles ="Administrator, Staff")] // allow staff and administrators to access this 
     public class CategoryController : Controller
     {
         private readonly FSWD2023fabi18Context _context;

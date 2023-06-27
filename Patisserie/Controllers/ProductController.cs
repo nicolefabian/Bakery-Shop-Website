@@ -12,9 +12,11 @@ using Newtonsoft.Json;
 using Patisserie.Models.DB;
 using X.PagedList;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Patisserie.Controllers
 {
+    [AllowAnonymous] //allow anyone to view the products 
     public class ProductController : Controller
     {
         private readonly FSWD2023fabi18Context _context;
@@ -26,39 +28,6 @@ namespace Patisserie.Controllers
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
-
-        /*// GET: Product
-        public async Task<IActionResult> Index()
-        {
-            var fSWD2023fabi18Context = _context.Products.Include(p => p.Category);
-            return View(await fSWD2023fabi18Context.ToListAsync());
-        }*/
-
-        /*   public ActionResult FilteredProducts(string category, string searchString, int? page)
-           {
-               var pageNumber = page ?? 1;
-
-               var product = _context.Products.Where(ct => ct.Category.Name == category).Include(c => c.Category);
-               if (!String.IsNullOrEmpty(searchString))
-               {
-                   product = product.Where(p => p.Name.Contains(searchString)).Include(c => c.Category);
-               }
-               return View(product.ToPagedList(pageNumber, 9));
-           }*/
-
-        /*//modified to take parameters
-        public async Task<IActionResult> Index(string searchString, int? page)
-        {
-            var pageNumber = page ?? 1;
-
-            var product = _context.Products.Include(p => p.Category);
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                product = product.Where(p => p.Name.Contains(searchString)).Include(c => c.Category);
-            }
-            return View(product.ToPagedList(pageNumber, 9));
-        }*/
-
 
         // Modified to take parameters
         public async Task<IActionResult> Index(string searchString, string category, int? page)
@@ -90,7 +59,8 @@ namespace Patisserie.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            return View(product.ToPagedList(pageNumber, 10));
+            //maximum of 6 on a page
+            return View(product.ToPagedList(pageNumber, 6));
         }
   
 
