@@ -146,9 +146,7 @@
 <script>
     paypal.Buttons({
         createOrder: function (data, actions) {
-            // This function sets up the details of the transaction,
-            // including the amount and line item details.
-
+            //gets the total
             var grandTotal = '@ViewBag.DiscountedTotal';
 
             return actions.order.create({
@@ -163,7 +161,6 @@
             // This function captures the funds from the transaction.
             return actions.order.capture().then(function (details) {
                 // This function shows a transaction success message to your buyer.
-                // When ready to go live, remove the alert and show a success message within this page. For example:
                 window.location.href = '@Url.Action("ClearCartAfterPayment","Order")';
             });
         }

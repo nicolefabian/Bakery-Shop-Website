@@ -178,12 +178,12 @@ namespace Patisserie.Areas.Identity.Pages.Account
                 };
 
 
-                if (user.MembershipDuration == 2)
-                    user.MembershipExpiry = DateTime.Now.AddMonths(2);
-                else if (user.MembershipDuration == 4)
+                if (user.MembershipDuration == 4)
                     user.MembershipExpiry = DateTime.Now.AddMonths(4);
                 else if (user.MembershipDuration == 6)
                     user.MembershipExpiry = DateTime.Now.AddMonths(6);
+                else if (user.MembershipDuration == 12)
+                    user.MembershipExpiry = DateTime.Now.AddMonths(12);
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
