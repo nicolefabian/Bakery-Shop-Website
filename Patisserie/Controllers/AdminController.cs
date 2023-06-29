@@ -7,7 +7,7 @@ using System.Data;
 
 namespace Patisserie.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator")] // allow administrator to access this
     public class AdminController : Controller
     {
         private readonly FSWD2023fabi18Context _context;
@@ -21,12 +21,14 @@ namespace Patisserie.Controllers
             _roleManager = roleManager;
         }
 
+        //showing all the roles
         public IActionResult Role()
         {
             var roles = _roleManager.Roles;
             return View(roles);
         }
 
+        //for creating new role
         public IActionResult CreateRole()
         {
             return View();
@@ -43,6 +45,7 @@ namespace Patisserie.Controllers
             return RedirectToAction("Role");
         }
 
+        //for editing existing role
         [HttpGet]
         public async Task<IActionResult> EditRole(string id)
         {
@@ -72,6 +75,7 @@ namespace Patisserie.Controllers
             return View(role);
         }
 
+        //for deleting existing role
         [HttpGet]
         public async Task<IActionResult> DeleteRole(string id)
         {

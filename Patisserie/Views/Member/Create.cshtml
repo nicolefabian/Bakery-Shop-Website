@@ -25,31 +25,42 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Membership" class="control-label"></label>
-                <input asp-for="Membership" class="form-control" />
+            <br />
+            <label asp-for="Membership" class="control-label"></label>
+            <div class="form-floating">
+                <select asp-for="Membership" class="form-control" autocomplete="Membership" aria-required="true" required>
+                    <option disabled selected value="">Select membership type</option>
+                    <option value="Gold">Gold</option>
+                    <option value="Silver">Silver</option>
+                    <option value="Bronze">Bronze</option>
+                </select>
                 <span asp-validation-for="Membership" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="MembershipExpiry" class="control-label"></label>
-                <input asp-for="MembershipExpiry" class="form-control" />
+                <input asp-for="MembershipExpiry" class="form-control" type="date" />
                 <span asp-validation-for="MembershipExpiry" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="MembershipDuration" class="control-label"></label>
-                <input asp-for="MembershipDuration" class="form-control" />
+
+            <br />
+            <label asp-for="MembershipDuration" class="control-label"></label>
+            <div class="form-floating">
+                <select asp-for="MembershipDuration" class="form-control" autocomplete="MembershipDuration" aria-required="true" required>
+                    <option disabled selected value="">Select membership duration</option>
+                    <option value="4">4 Months</option>
+                    <option value="6">6 Months</option>
+                    <option value="12">12 Months</option>
+                </select>
                 <span asp-validation-for="MembershipDuration" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-success button_submit" />
-                <a asp-controller="Category" asp-action="Index" class="btn btn-warning">Back to list</a>
+                <a asp-controller="Member" asp-action="Index" class="btn btn-warning">Back to list</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

@@ -5,6 +5,7 @@
     ViewData["Title"] = "Log in";
 }
 
+<!--modified login page to show it as card-->
 <div class="container-fluid h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -39,6 +40,7 @@
                         </div>
                     </form>
 
+                    <!--for google api-->
                     <br />
                     <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
                         <div class="d-flex justify-content-center">

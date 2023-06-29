@@ -11,6 +11,7 @@ namespace Patisserie.Models.DB
         {
             Orders = new HashSet<Order>();
         }
+        //added customised display names
         [DisplayName("Member ID")]
         public int MemberId { get; set; }
         [DisplayName("First name")]

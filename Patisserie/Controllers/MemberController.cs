@@ -53,14 +53,14 @@ namespace Patisserie.Controllers
                         // check if the membership expired
                         if (member.MembershipExpiry < DateTime.Now)
                         {
-                            ViewBag.MembershipExpiry = "Your membership has expired. You will no longer receive discount perks. Please contact us to renew!";
+                            ViewBag.MembershipExpiry = "Your membership has expired. You will NO longer receive discount perks. Please contact us to renew!";
                         }
                         // return the member record to view
                         return View(new List<Member> { member });
                     }
                 }
                
-                return RedirectToAction("Index", "Home");
+                return View("Index");
             }
             else
             {
@@ -68,7 +68,29 @@ namespace Patisserie.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator, Staff")]
+        // GET: Member/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
 
+        [Authorize(Roles = "Administrator, Staff")]
+        // POST: Member/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("MemberId,FirstName,LastName,Email,PhoneNumber,Membership,MembershipExpiry,MembershipDuration")] Member member)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(member);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(member);
+        }
 
         // GET: Member/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -88,28 +110,7 @@ namespace Patisserie.Controllers
             return View(member);
         }
 
-        // GET: Member/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Member/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MemberId,FirstName,LastName,Email,PhoneNumber,Membership,MembershipExpiry,MembershipDuration")] Member member)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(member);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(member);
-        }
-
+        [Authorize(Roles = "Administrator, Staff")]
         // GET: Member/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -126,6 +127,7 @@ namespace Patisserie.Controllers
             return View(member);
         }
 
+        [Authorize(Roles = "Administrator, Staff")]
         // POST: Member/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -161,6 +163,7 @@ namespace Patisserie.Controllers
             return View(member);
         }
 
+        [Authorize(Roles = "Administrator")] // allow administrators to access this 
         // GET: Member/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -179,6 +182,7 @@ namespace Patisserie.Controllers
             return View(member);
         }
 
+        [Authorize(Roles = "Administrator")] // allow administrators to access this 
         // POST: Member/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

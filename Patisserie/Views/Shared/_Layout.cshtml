@@ -44,7 +44,8 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
                         </li>
-                         @if (User.IsInRole("Member"))
+                        <!--member, administrator, staff can access this-->
+                        @if (User.IsInRole("Member") || (User.IsInRole("Administrator") || User.IsInRole("Staff")))
                          {
 
                             <li class="nav-item">

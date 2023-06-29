@@ -10,7 +10,6 @@ using Patisserie.Models.DB;
 
 namespace Patisserie.Controllers
 {
-    [Authorize(Roles ="Administrator, Staff")] // allow staff and administrators to access this 
     public class CategoryController : Controller
     {
         private readonly FSWD2023fabi18Context _context;
@@ -20,6 +19,7 @@ namespace Patisserie.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
         // GET: Category
         public async Task<IActionResult> Index()
         {
@@ -28,6 +28,7 @@ namespace Patisserie.Controllers
                           Problem("Entity set 'FSWD2023fabi18Context.Categories'  is null.");
         }
 
+        [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
         // GET: Category/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -46,12 +47,14 @@ namespace Patisserie.Controllers
             return View(category);
         }
 
+        [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
         // GET: Category/Create
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
         // POST: Category/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -68,6 +71,7 @@ namespace Patisserie.Controllers
             return View(category);
         }
 
+        [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
         // GET: Category/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -84,6 +88,7 @@ namespace Patisserie.Controllers
             return View(category);
         }
 
+        [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
         // POST: Category/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -119,6 +124,7 @@ namespace Patisserie.Controllers
             return View(category);
         }
 
+        [Authorize(Roles = "Administrator")] // allow administrators to access this 
         // GET: Category/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -137,6 +143,7 @@ namespace Patisserie.Controllers
             return View(category);
         }
 
+        [Authorize(Roles = "Administrator")] // allow administrators to access this 
         // POST: Category/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

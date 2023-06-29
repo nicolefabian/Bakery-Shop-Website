@@ -24,6 +24,7 @@ namespace Patisserie.Models.DB
         public string? PasswordHash { get; set; }
         public string? SecurityStamp { get; set; }
         public string? ConcurrencyStamp { get; set; }
+        //phone validation
         [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Invalid phone number format.")]
         public string? PhoneNumber { get; set; }
         public bool PhoneNumberConfirmed { get; set; }
@@ -31,7 +32,7 @@ namespace Patisserie.Models.DB
         public DateTimeOffset? LockoutEnd { get; set; }
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
-
+        //added customised display names 
         [DisplayName("First name")]
         public string? FirstName { get; set; }
         [DisplayName("Last name")]

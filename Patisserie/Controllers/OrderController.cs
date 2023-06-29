@@ -28,23 +28,23 @@ namespace Patisserie.Controllers
 
         public async Task<IActionResult> CheckOut()
         {
-            // Get the currently logged-in user
+            // get the currently logged-in user
             var user = await _userManager.GetUserAsync(User);
             string userEmail = user.Email;
 
             if (userEmail != null)
             {
-                // Retrieve the member record based on the logged-in user's email
+                // retrieve the member based on currently logged in
                 var member = _context.Members.FirstOrDefault(m => m.Email == userEmail);
 
                 if (member != null)
                 {
-                    // Get the cart items
+                    // get the cart items
                     var cartItems = GetCartItems();
 
                     if (cartItems != null && cartItems.Any())
                     {
-                        // Create a new order object to be saved in the database
+                        // create a new order object to be saved in the database
                         var order = new Order
                         {
                             Email = userEmail,
@@ -56,12 +56,12 @@ namespace Patisserie.Controllers
 
                         ViewBag.DiscountedTotal = CalculateTotal(cartItems).ToString("N2");
 
-                        // Save the order to the database
+                        // save the order to the database
                         _context.Orders.Add(order);
                         _context.SaveChanges();
 
  
-                        // Create and save order details
+                        // create and save order details
                         foreach (var item in cartItems)
                         {
                             var orderDetail = new OrderDetail
@@ -72,7 +72,7 @@ namespace Patisserie.Controllers
                                 Price = item.Product.Price,                              
                             };
 
-                            // Save the order detail to the database
+                            // save the order detail to the database
                             _context.OrderDetails.Add(orderDetail);
                             _context.SaveChanges();
                         }
@@ -97,10 +97,13 @@ namespace Patisserie.Controllers
             return total;
         }
 
+        //saves the cart items in the session
         private void SaveCartItems(List<CartItem> cartItems)
         {
             HttpContext.Session.Set("CartItems", cartItems); 
         }
+
+        //removes all products from cart
 
         public IActionResult ClearCart()
         {
@@ -108,21 +111,23 @@ namespace Patisserie.Controllers
             return RedirectToAction("Index");
         }
 
+        //clears all the products in cart after user successfully completed PayPal payment
         public async Task<IActionResult> ClearCartAfterPayment()
         {
-            // Get the currently logged-in user
+            // get the currently logged-in user
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return View();
             }
 
-            SaveCartItems(new List<CartItem>());
+            //SaveCartItems(new List<CartItem>());
             //adding a message for the user after successful payment
             ViewBag.UserDetails = "Order Successful! Thank you " + user.FirstName + " " + user.LastName + " " + "for your payment";
             return View("CheckOut");
         }
 
+        //retrieves cart items in the session
         private List<CartItem> GetCartItems()
         {
             var cartItems = HttpContext.Session.Get<List<CartItem>>("CartItems");
@@ -133,6 +138,7 @@ namespace Patisserie.Controllers
             return cartItems;
         }
 
+        //calculates the discount depending on membership
         private decimal GetDiscountPercentage(string membershipLevel, DateTime membershipExpiry)
         {
             decimal discountPercentage = 0.0m;
@@ -153,7 +159,6 @@ namespace Patisserie.Controllers
                     discountPercentage = 0.06m;
                 }
             }
-
             return discountPercentage;
         }
 
@@ -162,7 +167,7 @@ namespace Patisserie.Controllers
             var cartItems = HttpContext.Session.Get<List<CartItem>>("CartItems");
             if (cartItems != null)
             {
-                // Get the currently logged-in user
+                //gGet the currently logged-in user
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user != null)
                 {
@@ -170,16 +175,16 @@ namespace Patisserie.Controllers
                     var membershipExpiry = user.MembershipExpiry.Date;
                     decimal discountPercentage = GetDiscountPercentage(membershipType, membershipExpiry);
 
-                    // Apply the membership discount to cart items and calculate total price after discount
+                    // apply  membership discount to cart items and calculate total price after discount
                     decimal totalPrice = 0;
                     foreach (var item in cartItems)
                     {
                         decimal itemPrice = item.Product.Price;
-                        decimal discountedPrice = itemPrice - (itemPrice * discountPercentage); // Calculate the discounted price
-                        decimal totalPriceForItem = discountedPrice * item.Quantity; // Calculate the total price for the item (discounted price * quantity)
-                        item.TotalAmount = totalPriceForItem; // Update the total amount for the item
+                        decimal discountedPrice = itemPrice - (itemPrice * discountPercentage); // calculate the discounted price
+                        decimal totalPriceForItem = discountedPrice * item.Quantity; // calculate the total price for the item (discounted price * quantity)
+                        item.TotalAmount = totalPriceForItem; // update the total amount for the item
 
-                        totalPrice += totalPriceForItem; // Add the item's total price to the overall total price
+                        totalPrice += totalPriceForItem; // add the item's total price to the overall total price
                     }
                     SaveCartItems(cartItems);
                     ViewBag.MembershipMessage = $"You are a {membershipType} member. You have a {discountPercentage:P0} discount";
@@ -190,7 +195,7 @@ namespace Patisserie.Controllers
             return View(cartItems);
         }
 
-
+        //removes product from the cart
         public IActionResult RemoveFromCart(int productId)
         {
             var cartItems = GetCartItems();
@@ -202,15 +207,6 @@ namespace Patisserie.Controllers
             SaveCartItems(cartItems);
             return RedirectToAction("Index");
         }
-
-        // GET: Order
-        public async Task<IActionResult> ViewOrders()
-        {
-            return _context.Orders != null ?
-                        View(await _context.Orders.ToListAsync()) :
-                        Problem("Entity set 'FSWD2023fabi18Context.Orders'  is null.");
-        }
-
 
         // GET: Order/Details/5
         public async Task<IActionResult> Details(int? id)

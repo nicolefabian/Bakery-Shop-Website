@@ -29,10 +29,11 @@ namespace Patisserie.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        // Modified to take parameters
+        //issue with pagination. found the solution from here: https://stackoverflow.com/questions/18721249/pagedlist-loses-search-filter-on-second-page
         public async Task<IActionResult> Index(string searchString, string category, int? page)
         {
             var pageNumber = page ?? 1;
+            var pageSize = 6;
 
             var product = _context.Products.Include(p => p.Category);
 
@@ -40,6 +41,8 @@ namespace Patisserie.Controllers
             {
                 product = product.Where(p => p.Name.Contains(searchString)).Include(c => c.Category);
             }
+
+            //retrieve products matching the same category
             if (!String.IsNullOrEmpty(category))
             {
                 if (category == "New")
@@ -54,15 +57,30 @@ namespace Patisserie.Controllers
                 {
                     product = product.Where(p => p.Category.Name == "Special").Include(c => c.Category);
                 }
-                else
-                {
-                    return RedirectToAction("Index");
-                }
             }
-            //maximum of 6 on a page
-            return View(product.ToPagedList(pageNumber, 6));
+
+            //declaring products 
+            IPagedList<Product> filteredProducts;
+
+            //if not empty
+            if (!String.IsNullOrEmpty(searchString) || !String.IsNullOrEmpty(category))
+            {
+                //display only the filtered ones
+                filteredProducts = await product.ToPagedListAsync(pageNumber, pageSize);
+                //assigns the searchString value 
+                ViewBag.SearchString = searchString;
+                //assigns the category value
+                ViewBag.Category = category;
+                //returns it to the view
+                return View(filteredProducts);
+            }
+
+            //display all the products
+            var allProducts = await product.ToPagedListAsync(pageNumber, pageSize);
+
+            return View(allProducts);
         }
-  
+
 
         //search for a product
         public string IndexAJAX(string searchString)
@@ -199,7 +217,7 @@ namespace Patisserie.Controllers
             return View(product);
         }
 
-        [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
+        [Authorize(Roles = "Administrator")] // allow administrators to access this 
         // GET: Product/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -219,7 +237,7 @@ namespace Patisserie.Controllers
             return View(product);
         }
 
-        [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
+         [Authorize(Roles ="Administrator")] // allow administrators to access this 
         // POST: Product/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

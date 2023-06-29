@@ -6,7 +6,7 @@ using System.Data;
 
 namespace Patisserie.Controllers
 {
-    [Authorize(Roles = "Administrator, Staff")] // allow staff and administrators to access this 
+    [Authorize(Roles = "Administrator")] // allow administrators to access this 
     public class OrderReportController : Controller
     {
         private readonly FSWD2023fabi18Context _context;
@@ -18,6 +18,7 @@ namespace Patisserie.Controllers
         
         public IActionResult Index()
         {
+            //display an order report with the corresponding member details 
             string sql = @"SELECT o.OrderID, o.Email, o.FirstName, o.LastName, o.Total, m.Membership, m.MembershipExpiry, m.MembershipDuration, od.ProductID, od.Price
                         FROM [Order] o
                         JOIN Member m ON o.MemberID = m.MemberID

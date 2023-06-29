@@ -5,7 +5,7 @@ namespace Patisserie.Data
 {
     public class ApplicationUser: IdentityUser
     {
-        //Custom Fields
+        //custom Fields
         public string? FirstName { get; set; }
 
         public string? LastName { get; set; }
@@ -13,7 +13,6 @@ namespace Patisserie.Data
         public string? Membership { get; set; }
 
         public DateTime MembershipExpiry { get; set; }
-
 
         public int MembershipDuration { get; set; }
     }

@@ -62,14 +62,16 @@
         </div>
     }
 </div><br />
-@*display number of pages *@
+
+<!--issue with pagination. found solution from here: https://stackoverflow.com/questions/18721249/pagedlist-loses-search-filter-on-second-page-->
 @Html.PagedListPager(Model, page => Url.Action("Index",
-        new { Page = page }),
-        new PagedListRenderOptions
-        {
-            LiElementClasses = new string[] { "page-item" },
-            PageClasses = new string[] { "page-link" }
+    new { page, searchString = ViewBag.SearchString, category = ViewBag.Category }),
+    new PagedListRenderOptions
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
     })
+
 
 @*auto suggestion*@
 <script type="text/javascript">

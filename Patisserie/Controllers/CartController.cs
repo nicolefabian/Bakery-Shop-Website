@@ -6,7 +6,7 @@ using Patisserie.Models.DB;
 
 namespace Patisserie.Controllers
 {
-    [Authorize]
+    [Authorize] //allow authenticated users to access
     public class CartController : Controller
     {
         private readonly FSWD2023fabi18Context _context;
@@ -29,16 +29,11 @@ namespace Patisserie.Controllers
             }
             else
             {
-                // Get the currently logged-in user
+                // Get the currently logged-in member
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user != null)
                 {
-                    // Get the user's membership level
-                    var membershipType = user.Membership;
-                    var membershipExpiry = user.MembershipExpiry.Date;
-                    decimal discountPercentage = GetDiscountPercentage(membershipType, membershipExpiry);
 
-                    // Apply the membership discount to cart items and calculate total price after discount
                     decimal totalPrice = 0;
                     foreach (var item in cartItems)
                     {
@@ -54,10 +49,10 @@ namespace Patisserie.Controllers
                     ViewBag.Total = totalPrice.ToString("N2");
                 }
             }
-
             return View(cartItems);
         }
 
+        //retrieves cart 
         private List<CartItem> GetCartItems()
         {
             var cartItems = HttpContext.Session.Get<List<CartItem>>("CartItems");
@@ -69,32 +64,7 @@ namespace Patisserie.Controllers
             return cartItems;
         }
 
-
-        private decimal GetDiscountPercentage(string membershipLevel, DateTime membershipExpiry)
-        {
-            decimal discountPercentage = 0.0m;
-
-            // Check if the membership is still valid
-            if (membershipExpiry > DateTime.Now.Date)
-            {
-                if (membershipLevel == "Gold")
-                {
-                    discountPercentage = 0.14m;
-                }
-                else if (membershipLevel == "Silver")
-                {
-                    discountPercentage = 0.09m;
-                }
-                else if (membershipLevel == "Bronze")
-                {
-                    discountPercentage = 0.06m;
-                }
-            }
-
-            return discountPercentage;
-        }
-
-
+        //allows users to add products to cart
         public IActionResult AddToCart(int id)
         {
             var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
@@ -131,6 +101,7 @@ namespace Patisserie.Controllers
             }
         }
 
+        //decrease product quantity in the cart
         public IActionResult DecreaseQuantity(int id)
         {
             var cartItems = GetCartItems();
@@ -154,7 +125,7 @@ namespace Patisserie.Controllers
             return RedirectToAction("Index");
         }
 
-
+        //increase product quantity in the cart
         public IActionResult IncreaseQuantity(int id)
         {
             var cartItems = GetCartItems();
@@ -171,12 +142,13 @@ namespace Patisserie.Controllers
             return RedirectToAction("Index");
         }
 
-
+        //save products in sesson
         private void SaveCartItems(List<CartItem> cartItems)
         {
             HttpContext.Session.Set("CartItems", cartItems); // Update cart in the session
         }
 
+        //remove products from the cart 
         public IActionResult RemoveFromCart(int productId)
         {
             var cartItems = GetCartItems();
@@ -189,7 +161,7 @@ namespace Patisserie.Controllers
             return RedirectToAction("Index");
         }
 
-
+        //removes all products from the cart
         public IActionResult ClearCart()
         {
             SaveCartItems(new List<CartItem>());
