@@ -43,11 +43,13 @@
                 <td>{{item.ProductId}}</td>
                 <td>{{item.Price}}</td>
                 <td>{{item.Membership}}</td>
+                <!--display only date-->
                 <td>{{item.MembershipExpiry | date:'yyyy-MM-dd'}}</td>
                 <td>{{item.MembershipDuration}}</td>
                 <td>{{Expiry(item.MembershipExpiry)}} days </td>
             </tr>
             <tfoot>
+                <!--validation-->
                 <tr>
                     <td colspan="11"  ng-if="Data.length === 0">No records found.</td>
                 </tr>
@@ -61,6 +63,7 @@
     app.controller('MyCtrl', function ($scope) {
         $scope.Data = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
         $scope.Expiry = function (expiryDate) {
+            //calculate how many days are remaining before the membership expires
             const currentDate = new Date();
             const expiry = new Date(expiryDate);
             const timeDiff = expiry.getTime() - currentDate.getTime();

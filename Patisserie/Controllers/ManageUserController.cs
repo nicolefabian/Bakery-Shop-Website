@@ -188,10 +188,5 @@ namespace Patisserie.Controllers
           return (_context.AspNetUsers?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-
-        //Custom filter
-
-
-
     }
 }

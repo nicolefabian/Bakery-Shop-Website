@@ -121,7 +121,7 @@ namespace Patisserie.Controllers
                 return View();
             }
 
-            //SaveCartItems(new List<CartItem>());
+            SaveCartItems(new List<CartItem>());
             //adding a message for the user after successful payment
             ViewBag.UserDetails = "Order Successful! Thank you " + user.FirstName + " " + user.LastName + " " + "for your payment";
             return View("CheckOut");
