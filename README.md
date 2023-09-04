@@ -5,28 +5,27 @@ An ASP.NET Core MVC web application developed as a Full Stack Web Development as
 ## Homepage
 ![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/c73f2581-79e8-475f-89dc-4f4958256a50)
 
-
 ## About Us
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/69e87b3c-dd62-4fc4-9f38-9128aa233258)
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/c91a53e6-2dbf-4ff8-aa17-f0fcb3accdec)
 
 ## Privacy 
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/eb0a8a3a-28e1-410d-92b0-2fe35236b340)
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/a02dc266-f574-4d3c-8ba9-c9348698b9f5)
 
 ## Products
 ### 1st page
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/9addb4fd-e24e-433b-9a2c-a6da3056313b)
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/11b2e7d2-5d99-4096-bedc-cba8ffc0a7b0)
 
 ### 2nd page
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/e67269c4-f9cd-4a68-8b35-8571215f99fb)
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/5e484c5b-4f79-4414-aa7e-b6da0b7d28b5)
 
 ### 3rd page
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/a079b505-c699-4b47-898a-083b51d6a11d)
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/e80ac6d1-a2b2-4143-b043-83b796164c21)
 
 ## Registration
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/f5fdaef5-02aa-4ab9-a455-6e33d38cd351)
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/db652c7c-1535-480f-a509-2c8d2d4eee53)
 
 ## Login 
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/d8c230aa-1158-4c12-b171-31d7cb76de99)
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/b9049998-a744-43a5-a37c-d3d4183c8bb9)
 
 ## Membership
 ![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/8a5bed18-51de-4961-bda7-99d7d09c6a4f)
