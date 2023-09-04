@@ -1,12 +1,15 @@
 # Bakery-Shop-Website
 
 An ASP.NET Core MVC web application developed as a Full Stack Web Development assignment using ASP.Net 6, Entity Framework, and SQL Server to perform CRUD operations.
+
 This web application is divided into different views:
 1. Administration - manage users, roles, members, categories, and products by performing CRUD operations. Additionally, they can view order reports.
 2. Staff - granted similar basic access level with additional functionalities to manage members, products, and categories. However, these are limited to only adding and editing.
 3. Customer
-      a. Visitor (unregistered) - browse the homepage, about us, and privacy pages to view information about the website. Additionally, they can view and search the product catalogue and each product’s details however, they do not have the ability to place orders and view membership details
-  b. Member (registered) - customers who have successfully registered an account. By becoming a member, they gain additional privileges such as discount benefits compared to visitors. Registered members can access a wide range of features and functionalities including similar access level with the homepage, about us, and privacy page for website information.  Search, browse, and view product details is also available. Additionally, as a member, they can purchase products by using the add to cart function and checkout with PayPal to complete transaction. They can also view their membership details.
+
+   a. Visitor (unregistered) - browse the homepage, about us, and privacy pages to view information about the website. Additionally, they can view and search the product catalogue and each product’s details however, they do not have the ability to place orders and view membership details
+
+      b. Member (registered) - customers who have successfully registered an account. By becoming a member, they gain additional privileges such as discount benefits compared to visitors. Registered members can access a wide range of features and functionalities including similar access level with the homepage, about us, and privacy page for website information.  Search, browse, and view product details is also available. Additionally, as a member, they can purchase products by using the add to cart function and checkout with PayPal to complete transaction. They can also view their membership details.
 
 # Customer Side
 ## Homepage
