@@ -1,7 +1,14 @@
 # Bakery-Shop-Website
 
 An ASP.NET Core MVC web application developed as a Full Stack Web Development assignment using ASP.Net 6, Entity Framework, and SQL Server to perform CRUD operations.
+This web application is divided into different views:
+1. Administration - manage users, roles, members, categories, and products by performing CRUD operations. Additionally, they can view order reports.
+2. Staff - granted similar basic access level with additional functionalities to manage members, products, and categories. However, these are limited to only adding and editing.
+3. Customer
+      a. Visitor (unregistered) - browse the homepage, about us, and privacy pages to view information about the website. Additionally, they can view and search the product catalogue and each product’s details however, they do not have the ability to place orders and view membership details
+  b. Member (registered) - customers who have successfully registered an account. By becoming a member, they gain additional privileges such as discount benefits compared to visitors. Registered members can access a wide range of features and functionalities including similar access level with the homepage, about us, and privacy page for website information.  Search, browse, and view product details is also available. Additionally, as a member, they can purchase products by using the add to cart function and checkout with PayPal to complete transaction. They can also view their membership details.
 
+# Customer Side
 ## Homepage
 ![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/c73f2581-79e8-475f-89dc-4f4958256a50)
 
@@ -28,16 +35,25 @@ An ASP.NET Core MVC web application developed as a Full Stack Web Development as
 ![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/b9049998-a744-43a5-a37c-d3d4183c8bb9)
 
 ## Membership
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/8a5bed18-51de-4961-bda7-99d7d09c6a4f)
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/38ddb30a-d0a7-4125-98bf-caba9e8c096b)
 
 ## Cart
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/7551236d-f83d-451c-8d04-a1368ba08614)
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/2c30e72b-fd41-4d4d-a8ae-010788dfce41)
 
 ## Proceed to Checkout
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/aaa679aa-7882-47d8-86ca-e5488a202fa7)
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/9fef80a0-7eb6-445b-91b6-ed7df40fa63c)
 
-## Paypal 
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/0a725834-b3f5-4aee-9532-efd19c5eec3c)
+## Paypal API
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/10534194-a9c0-4d55-a135-9c5e0a6aa329)
 
 ## After payment
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/8d598352-7b6f-48c8-a6de-a55b6f2e12dd)
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/97c4f6e6-254f-4d9b-a0a4-b67e1053883e)
+
+# Admin / Staff Side
+
+## Manage member
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/9694b7a0-fdc9-4812-a8f8-0e63b786240c)
+
+## Manage category
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/6ef92880-5d62-4e85-94aa-9bfab108b91e)
+
