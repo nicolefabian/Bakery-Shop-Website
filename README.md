@@ -3,7 +3,8 @@
 An ASP.NET Core MVC web application developed as a Full Stack Web Development assignment using ASP.Net 6, Entity Framework, and SQL Server to perform CRUD operations.
 
 ## Homepage
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/bb13fd17-ff84-4ebe-a591-76544ad3408d)
+![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/c73f2581-79e8-475f-89dc-4f4958256a50)
+
 
 ## About Us
 ![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/69e87b3c-dd62-4fc4-9f38-9128aa233258)
