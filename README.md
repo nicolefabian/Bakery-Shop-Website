@@ -52,11 +52,3 @@ This web application is divided into different views:
 ## After payment
 ![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/97c4f6e6-254f-4d9b-a0a4-b67e1053883e)
 
-# Admin / Staff Side
-
-## Manage member
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/9694b7a0-fdc9-4812-a8f8-0e63b786240c)
-
-## Manage category
-![image](https://github.com/nicolefabian/Bakery-Shop-Website/assets/102332600/6ef92880-5d62-4e85-94aa-9bfab108b91e)
-
